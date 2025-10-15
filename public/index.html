@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/src/static/main.css">
+		<link rel="manifest" href="manifest.json">
+		<title>NoteMaster</title>
+		<style>
+			textarea {
+				border: 1px solid black;
+				font-family: "Times New Roman", Times, serif;
+				width: 400px;
+				font-size: 16px;
+				padding: 5px;
+				resize: none;
+			}
+			textarea.title {
+				height: 16px;
+			}
+			textarea.content {
+				height: 500px;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script src="../src/index.js" type="module"></script>
+		<div id="wrapper">
+			<div id="notify gradient"></div>
+			<div id="notifications">
+				<div class="notification">sfglkjsdlkfj ljfldsk jsj kdjs fk fdfdsf</div>
+				<div class="notification">qwefoijsldjkv sdjfkwjflksfd jklfjwelfjlkfj sdlfjqwklf</div>
+				<div class="notification">ekjfsd fklkwjfljflk jwflifjlw flwekjfl wefjlwe kf</div>
+			</div>
+			<div id="header">
+				<div class="headerButton selected">Notebook</div>
+				<div class="headerButton">Task Manager</div>
+				<div class="headerButton">Calendar</div>
+			</div>
+			<textarea class="title" placeholder="Title"></textarea>
+			<textarea class="content" placeholder="Write your note here..."></textarea>
+			<div class="button">Save Note</div>
+		</div>
+	</body>
+</html>
