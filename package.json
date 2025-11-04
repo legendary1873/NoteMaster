@@ -1,0 +1,24 @@
+{
+  "name": "notemaster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legendary1873/NoteMaster.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/legendary1873/NoteMaster/issues"
+  },
+  "homepage": "https://github.com/legendary1873/NoteMaster#readme",
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}

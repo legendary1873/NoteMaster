@@ -1,0 +1,71 @@
+@font-face {
+    font-family: "Lucida Sans";
+    src: url("../fonts/Lucida Sans-Regular.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1{
+    font-family: Georgia, serif;
+    font-weight: normal;
+    font-size: 30px;
+    text-align: center;
+}
+
+h2 {
+    font-family: Georgia, serif;
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+}
+
+h3 {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 0px;
+}
+
+p {
+    font-family: "Lucida Sans", Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 1.1286em;
+}
+
+p.summary {
+    margin-left: 1em;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+}
+
+div.clear {
+	clear: both;
+}
+
+div#wrapper {
+	margin: auto;
+	width: 700px;
+	padding: 20px 0 0 220px;
+	position: relative;
+}
+
+.logo {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 10;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid black;
+    margin: 2px;
+}
