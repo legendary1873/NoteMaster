@@ -1,5 +1,0 @@
-style.css
-index.html
-index.js
-app.js
-serviceWorker.js
