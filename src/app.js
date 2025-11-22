@@ -1,4 +1,4 @@
-const textarea = document.querySelector('textarea');
+const editor = document.getElementById('editor');
 const STORAGE_KEY = 'notemaster-content';
 const AUTO_SAVE_INTERVAL = 1000;
 let autoSaveTimer;
@@ -16,15 +16,15 @@ function loadNote() {
     console.log('Loading note from storage...');
     const savedContent = localStorage.getItem(STORAGE_KEY);
     console.log('Saved content:', savedContent);
-    if (savedContent && textarea) {
-        textarea.value = savedContent;
+    if (savedContent && editor) {
+        editor.innerHTML = savedContent;
     }
 }
 
 // Setup auto-save on input
 function setupAutoSave() {
-    if (textarea) {
-        textarea.addEventListener('input', () => {
+    if (editor) {
+        editor.addEventListener('input', () => {
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(() => {
                 saveNote();
@@ -35,16 +35,20 @@ function setupAutoSave() {
 
 // Save note to localStorage
 function saveNote() {
-    if (textarea) {
-        localStorage.setItem(STORAGE_KEY, textarea.value);
-        console.log('Note saved:', textarea.value.substring(0, 50));
+    if (editor) {
+        localStorage.setItem(STORAGE_KEY, editor.innerHTML);
+        console.log('Note saved');
     }
 }
+
+// Make saveNote globally accessible
+window.saveNote = saveNote;
+window.autoSaveTimer = autoSaveTimer;
 
 // Register service worker
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
+        navigator.serviceWorker.register('/service-worker.js')
             .then(reg => console.log('Service Worker registered'))
             .catch(err => console.log('Service Worker error:', err));
     }

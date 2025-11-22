@@ -11,16 +11,39 @@
     </head>
     <body>
         <div id="wrapper">
-            <header>
-                <button id="themeToggle" aria-label="Toggle dark mode">
-                    <svg id="moon-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
+            <div id="editor" contenteditable="true" placeholder="Type your notes here..."></div>
+            <aside id="formatting-sidebar">
+                <h3>Format</h3>
+                <button id="bold-btn" title="Bold">
+                    <strong>B</strong>
                 </button>
-            </header>
-            <textarea placeholder="Type your notes here..."></textarea>
+                <button id="italic-btn" title="Italic">
+                    <em>I</em>
+                </button>
+                <button id="heading1-btn" title="Heading 1">
+                    H1
+                </button>
+                <button id="heading2-btn" title="Heading 2">
+                    H2
+                </button>
+                <button id="normal-btn" title="Normal Text">
+                    N
+                </button>
+                <button id="bullet-btn" title="Bullet List">
+                    • List
+                </button>
+                <button id="numbered-btn" title="Numbered List">
+                    1. List
+                </button>
+            </aside>
+            <button id="themeToggle" aria-label="Toggle dark mode">
+                <svg id="moon-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
         </div>
         <script src="js/theme-toggle.js"></script>
+        <script src="js/formatter.js"></script>
         <script src="../src/app.js"></script>
     </body>
 </html>
