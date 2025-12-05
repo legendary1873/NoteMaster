@@ -4,11 +4,15 @@
   "description": "A simple note-taking Progressive Web App with offline capabilities and local storage.",
   "main": "src/index.js",
   "scripts": {
-    "start": "lite-server",
+    "start": "node server.js",
+    "dev": "lite-server",
     "build": "webpack --mode production",
     "test": "jest"
   },
   "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "cors": "^2.8.5",
     "lite-server": "^2.6.1",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",

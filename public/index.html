@@ -11,7 +11,29 @@
     </head>
     <body>
         <div id="wrapper">
-            <div id="editor" contenteditable="true" placeholder="Type your notes here..."></div>
+            <!-- Notes Panel -->
+            <aside id="notes-panel">
+                <div id="notes-header">
+                    <h2>Notes</h2>
+                    <button id="new-note-btn" title="Create new note">+ New</button>
+                </div>
+                <div id="notes-list"></div>
+            </aside>
+
+            <!-- Editor Section -->
+            <div id="editor-section">
+                <!-- Title and Save Bar -->
+                <div id="title-bar">
+                    <input id="note-title" type="text" placeholder="Note title...">
+                    <button id="save-btn" title="Save note">Save</button>
+                    <button id="delete-btn" title="Delete note">Delete</button>
+                </div>
+                
+                <!-- Editor -->
+                <div id="editor-section"><textarea id="editor" type="text" placeholder="Type your notes here..."></textarea></div>
+            </div>
+
+            <!-- Formatting Sidebar -->
             <aside id="formatting-sidebar">
                 <h3>Format</h3>
                 <button id="bold-btn" title="Bold">
@@ -36,14 +58,18 @@
                     1. List
                 </button>
             </aside>
+
+            <!-- Theme Toggle -->
             <button id="themeToggle" aria-label="Toggle dark mode">
                 <svg id="moon-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button>
         </div>
+        <script src="js/api-client.js"></script>
         <script src="js/theme-toggle.js"></script>
         <script src="js/formatter.js"></script>
+        <script src="js/notes-manager.js"></script>
         <script src="../src/app.js"></script>
     </body>
 </html>
