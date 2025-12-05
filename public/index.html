@@ -17,6 +17,9 @@
                     <h2>Notes</h2>
                     <button id="new-note-btn" title="Create new note">+ New</button>
                 </div>
+                <div id="search-container">
+                    <input id="search-input" type="text" placeholder="Search notes...">
+                </div>
                 <div id="notes-list"></div>
             </aside>
 
@@ -30,7 +33,7 @@
                 </div>
                 
                 <!-- Editor -->
-                <div id="editor-section"><textarea id="editor" type="text" placeholder="Type your notes here..."></textarea></div>
+                <div id="editor" contenteditable="true" placeholder="Type your notes here..."></div>
             </div>
 
             <!-- Formatting Sidebar -->
@@ -65,6 +68,12 @@
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button>
+
+            <!-- Status Indicator -->
+            <div id="status-indicator" class="online" title="Online">
+                <span class="status-dot"></span>
+                <span class="status-text">Online</span>
+            </div>
         </div>
         <script src="js/api-client.js"></script>
         <script src="js/theme-toggle.js"></script>

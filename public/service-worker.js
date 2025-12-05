@@ -1,13 +1,18 @@
-const CACHE_NAME = 'notemaster-v1';
+const CACHE_NAME = 'notemaster-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/css/style.css',
   '/css/dark.css',
+  '/js/api-client.js',
+  '/js/formatter.js',
+  '/js/notes-manager.js',
   '/js/theme-toggle.js',
-  '/js/app.js',
   '/manifest.json',
-  '/fonts/iAWriterMonoS-Regular.ttf'
+  '/fonts/iAWriterMonoS-Regular.ttf',
+  '/fonts/iAWriterMonoS-Bold.ttf',
+  '/fonts/iAWriterMonoS-Italic.ttf',
+  '/fonts/iAWriterMonoS-BoldItalic.ttf'
 ];
 
 self.addEventListener('install', (event) => {
@@ -22,18 +27,55 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            if (response) {
-                return response;
-            }
-            return fetch(event.request).catch(() => {
-                if (event.request.destination === 'document') {
-                    return caches.match('/index.html');
+    // For API calls, try network first, then cache
+    if (event.request.url.includes('/api/')) {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    if (response.ok) {
+                        // Cache successful API responses
+                        const clonedResponse = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, clonedResponse);
+                        });
+                    }
+                    return response;
+                })
+                .catch(() => {
+                    // Return cached response if network fails
+                    return caches.match(event.request).then((response) => {
+                        return response || new Response(JSON.stringify([]), {
+                            status: 200,
+                            statusText: 'From Cache',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    });
+                })
+        );
+    } else {
+        // For other resources, use cache first strategy
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                if (response) {
+                    return response;
                 }
-            });
-        })
-    );
+                return fetch(event.request).then((response) => {
+                    if (!response || response.status !== 200 || response.type === 'error') {
+                        return response;
+                    }
+                    const clonedResponse = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, clonedResponse);
+                    });
+                    return response;
+                }).catch(() => {
+                    if (event.request.destination === 'document') {
+                        return caches.match('/index.html');
+                    }
+                });
+            })
+        );
+    }
 });
 
 self.addEventListener('activate', (event) => {

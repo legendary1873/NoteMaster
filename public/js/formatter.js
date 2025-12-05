@@ -1,3 +1,4 @@
+// Text Formatter - Handles rich text formatting for contentEditable editor
 const editor = document.getElementById('editor');
 const normalBtn = document.getElementById('normal-btn');
 const boldBtn = document.getElementById('bold-btn');
@@ -7,149 +8,68 @@ const heading2Btn = document.getElementById('heading2-btn');
 const bulletBtn = document.getElementById('bullet-btn');
 const numberedBtn = document.getElementById('numbered-btn');
 
-// Style tracking object
-const styleTracker = {};
-
-// Generate unique ID for text nodes
-function getNodeId(node) {
-    if (!node.id) {
-        node.id = 'node-' + Math.random().toString(36).substr(2, 9);
-    }
-    return node.id;
+// Helper function to execute formatting commands
+function formatText(command, value = null) {
+    document.execCommand(command, false, value);
+    editor.focus();
 }
 
-// Apply computed styles based on tracking
-function applyTrackedStyles(node) {
-    const nodeId = getNodeId(node);
-    const styles = styleTracker[nodeId] || {};
-    
-    // Remove conflicting default styles
-    if (node.tagName === 'H1' || node.tagName === 'H2') {
-        if (styles.bold === false) {
-            node.style.fontWeight = 'normal';
-        }
-        if (styles.italic === false) {
-            node.style.fontStyle = 'normal';
-        }
-    }
-}
-
-// Track styles for selected content
-function trackStyles(bold, italic) {
-    const selection = window.getSelection();
-    if (selection.rangeCount === 0) return;
-    
-    const range = selection.getRangeAt(0);
-    const container = range.commonAncestorContainer;
-    const node = container.nodeType === 3 ? container.parentNode : container;
-    
-    const nodeId = getNodeId(node);
-    if (!styleTracker[nodeId]) {
-        styleTracker[nodeId] = {};
-    }
-    
-    if (bold !== undefined) styleTracker[nodeId].bold = bold;
-    if (italic !== undefined) styleTracker[nodeId].italic = italic;
-}
-
-// Normal text formatting - revert heading sizes to body text
+// Normal text - convert to paragraph
 normalBtn.addEventListener('click', () => {
-    document.execCommand('formatBlock', false, '<p>');
-    editor.focus();
-    
-    const selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        trackStyles(false, false);
-        applyTrackedStyles(selection.getRangeAt(0).commonAncestorContainer.parentNode);
-    }
+    formatText('formatBlock', '<p>');
 });
 
-// Bold formatting with iAWriterMonoS-Bold
+// Bold formatting
 boldBtn.addEventListener('click', () => {
-    const selection = window.getSelection();
-    const isBold = document.queryCommandState('bold');
-    
-    document.execCommand('bold', false, null);
-    
-    if (selection.rangeCount > 0) {
-        trackStyles(!isBold, undefined);
-        const node = selection.getRangeAt(0).commonAncestorContainer.parentNode;
-        applyTrackedStyles(node);
-    }
-    
-    editor.focus();
+    formatText('bold');
 });
 
-// Italic formatting with iAWriterMonoS-Italic
+// Italic formatting
 italicBtn.addEventListener('click', () => {
-    const selection = window.getSelection();
-    const isItalic = document.queryCommandState('italic');
-    
-    document.execCommand('italic', false, null);
-    
-    if (selection.rangeCount > 0) {
-        trackStyles(undefined, !isItalic);
-        const node = selection.getRangeAt(0).commonAncestorContainer.parentNode;
-        applyTrackedStyles(node);
-    }
-    
-    editor.focus();
+    formatText('italic');
 });
 
 // Heading 1 formatting
 heading1Btn.addEventListener('click', () => {
-    document.execCommand('formatBlock', false, '<h1>');
-    
-    const selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        const node = selection.getRangeAt(0).commonAncestorContainer.parentNode;
-        applyTrackedStyles(node);
-    }
-    
-    editor.focus();
+    formatText('formatBlock', '<h1>');
 });
 
 // Heading 2 formatting
 heading2Btn.addEventListener('click', () => {
-    document.execCommand('formatBlock', false, '<h2>');
-    
-    const selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-        const node = selection.getRangeAt(0).commonAncestorContainer.parentNode;
-        applyTrackedStyles(node);
-    }
-    
-    editor.focus();
+    formatText('formatBlock', '<h2>');
 });
 
 // Bullet list formatting
 bulletBtn.addEventListener('click', () => {
-    document.execCommand('insertUnorderedList', false, null);
-    editor.focus();
+    formatText('insertUnorderedList');
 });
 
 // Numbered list formatting
 numberedBtn.addEventListener('click', () => {
-    document.execCommand('insertOrderedList', false, null);
-    editor.focus();
+    formatText('insertOrderedList');
 });
 
-// Apply tracked styles when loading content
-editor.addEventListener('load', () => {
-    const allNodes = editor.querySelectorAll('*');
-    allNodes.forEach(node => applyTrackedStyles(node));
-});
-
-// Update app.js to trigger save when content changes
-editor.addEventListener('input', () => {
-    if (window.saveNote) {
-        clearTimeout(window.autoSaveTimer);
-        window.autoSaveTimer = setTimeout(() => {
-            window.saveNote();
-        }, 1000);
+// Prevent default paste behavior and paste as plain text
+editor.addEventListener('paste', (e) => {
+    e.preventDefault();
+    
+    // Get pasted text
+    let text = '';
+    if (e.clipboardData || e.originalEvent.clipboardData) {
+        text = (e.originalEvent || e).clipboardData.getData('text/plain');
+    } else if (window.clipboardData) {
+        text = window.clipboardData.getData('Text');
+    }
+    
+    // Insert as text node
+    if (document.queryCommandSupported('insertText')) {
+        document.execCommand('insertText', false, text);
+    } else {
+        document.execCommand('paste', false, text);
     }
 });
 
-// Store and restore style tracker with note content
-window.getStyleTracker = () => styleTracker;
-window.setStyleTracker = (tracker) => Object.assign(styleTracker, tracker);
+// Initialize with a paragraph if empty
+if (editor.innerHTML === '' || editor.innerHTML === '<br>') {
+    editor.innerHTML = '<p></p>';
+}

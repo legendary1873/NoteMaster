@@ -124,6 +124,24 @@ app.delete('/api/notes/:id', (req, res) => {
     });
 });
 
+// SEARCH notes by title or content
+app.get('/api/notes/search/:query', (req, res) => {
+    const { query } = req.params;
+    const searchTerm = `%${query}%`;
+    
+    db.all(
+        'SELECT * FROM notes WHERE title LIKE ? OR content LIKE ? ORDER BY updated_at DESC',
+        [searchTerm, searchTerm],
+        (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+            } else {
+                res.json(rows || []);
+            }
+        }
+    );
+});
+
 // Serve index.html for all routes (SPA)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

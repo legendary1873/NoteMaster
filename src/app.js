@@ -8,6 +8,70 @@ function initApp() {
     console.log('App initializing...');
     setupAutoSave();
     registerServiceWorker();
+    setupOnlineOfflineHandling();
+}
+
+// Setup online/offline event handling
+function setupOnlineOfflineHandling() {
+    const statusIndicator = document.getElementById('status-indicator');
+    
+    window.addEventListener('online', async () => {
+        console.log('App is now online');
+        if (statusIndicator) {
+            statusIndicator.classList.remove('offline');
+            statusIndicator.classList.add('online');
+            statusIndicator.querySelector('.status-text').textContent = 'Online';
+        }
+        await syncPendingChanges();
+        // Reload notes from server
+        await window.loadNotesList?.();
+    });
+    
+    window.addEventListener('offline', () => {
+        console.log('App is now offline');
+        if (statusIndicator) {
+            statusIndicator.classList.remove('online');
+            statusIndicator.classList.add('offline');
+            statusIndicator.querySelector('.status-text').textContent = 'Offline';
+        }
+    });
+    
+    // Set initial status
+    if (statusIndicator) {
+        if (navigator.onLine) {
+            statusIndicator.classList.add('online');
+        } else {
+            statusIndicator.classList.add('offline');
+            statusIndicator.querySelector('.status-text').textContent = 'Offline';
+        }
+    }
+}
+
+// Sync pending changes when coming online
+async function syncPendingChanges() {
+    try {
+        const cachedNotes = window.getNotesFromCache?.() || [];
+        for (const note of cachedNotes) {
+            if (note.pending) {
+                if (note.id > Date.now() - 86400000) { // Created in last 24 hours
+                    // Try to create on server
+                    await createNote(note.title, note.content);
+                } else {
+                    // Try to update on server
+                    await updateNote(note.id, note.title, note.content);
+                }
+            }
+        }
+        console.log('Pending changes synced');
+    } catch (error) {
+        console.error('Error syncing pending changes:', error);
+    }
+}
+
+// Show notification
+function showNotification(message) {
+    console.log('Notification:', message);
+    // You can add a toast notification here
 }
 
 // Setup auto-save on input (saves to database)

@@ -1,6 +1,7 @@
 // Notes Manager - Handles UI for notes list and interactions
 let currentNoteId = null;
 let allNotes = [];
+let filteredNotes = [];
 
 const notesList = document.getElementById('notes-list');
 const newNoteBtn = document.getElementById('new-note-btn');
@@ -8,6 +9,7 @@ const noteTitle = document.getElementById('note-title');
 const editor = document.getElementById('editor');
 const saveBtn = document.getElementById('save-btn');
 const deleteBtn = document.getElementById('delete-btn');
+const searchInput = document.getElementById('search-input');
 
 // Load all notes and populate the list
 async function loadNotesList() {
@@ -23,12 +25,17 @@ async function loadNotesList() {
 function renderNotesList() {
     notesList.innerHTML = '';
     
-    if (allNotes.length === 0) {
-        notesList.innerHTML = '<p class="empty-message">No notes yet. Create one!</p>';
+    const notesToRender = filteredNotes.length > 0 && searchInput.value.trim() ? filteredNotes : allNotes;
+    
+    if (notesToRender.length === 0) {
+        const message = searchInput.value.trim() 
+            ? '<p class="empty-message">No notes found</p>'
+            : '<p class="empty-message">No notes yet. Create one!</p>';
+        notesList.innerHTML = message;
         return;
     }
 
-    allNotes.forEach(note => {
+    notesToRender.forEach(note => {
         const noteItem = document.createElement('div');
         noteItem.className = `note-item ${currentNoteId === note.id ? 'active' : ''}`;
         noteItem.innerHTML = `
@@ -85,6 +92,11 @@ saveBtn.addEventListener('click', async () => {
     const content = editor.innerHTML;
 
     try {
+        // Show saving state
+        const originalText = saveBtn.textContent;
+        saveBtn.textContent = 'Saving...';
+        saveBtn.disabled = true;
+        
         const updated = await updateNote(currentNoteId, title, content);
         if (updated) {
             // Update in local list
@@ -93,11 +105,21 @@ saveBtn.addEventListener('click', async () => {
                 allNotes[noteIndex] = { ...allNotes[noteIndex], title, content };
             }
             renderNotesList();
-            alert('Note saved successfully!');
+            
+            // Show success
+            saveBtn.textContent = '✓ Saved';
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+            }, 2000);
         }
     } catch (error) {
         console.error('Error saving note:', error);
-        alert('Failed to save note');
+        saveBtn.textContent = 'Error saving';
+        saveBtn.disabled = false;
+        setTimeout(() => {
+            saveBtn.textContent = 'Save';
+        }, 2000);
     }
 });
 
@@ -142,3 +164,21 @@ function escapeHtml(text) {
 
 // Load notes list when manager is initialized
 document.addEventListener('DOMContentLoaded', loadNotesList);
+
+// Search functionality
+searchInput.addEventListener('input', async (e) => {
+    const query = e.target.value.trim();
+    
+    if (!query) {
+        filteredNotes = [];
+        renderNotesList();
+        return;
+    }
+    
+    try {
+        filteredNotes = await searchNotes(query);
+        renderNotesList();
+    } catch (error) {
+        console.error('Error searching notes:', error);
+    }
+});
