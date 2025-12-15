@@ -149,8 +149,49 @@ async function saveNoteToDatabase() {
     }
 }
 
+// Explicit save function that bypasses change detection
+// Used when user manually clicks the Save button
+async function saveNoteExplicitly() {
+    if (!window.currentNoteId) {
+        console.warn('No note selected, cannot save');
+        return false;
+    }
+
+    const title = (noteTitle?.value || 'Untitled Note').trim();
+    const content = editor?.innerHTML || '';
+
+    try {
+        console.log('Explicitly saving note:', window.currentNoteId);
+        console.log('Title:', title);
+        console.log('Content length:', content.length);
+        
+        // Save the note content and title
+        const result = await updateNote(window.currentNoteId, title, content);
+        if (!result) {
+            console.error('Failed to save note');
+            return false;
+        }
+        
+        // Save tags if they exist
+        if (window.currentNoteTags && window.updateNoteTags) {
+            const tagIds = window.currentNoteTags.map(t => t.id);
+            console.log('Saving tags:', tagIds);
+            await window.updateNoteTags(window.currentNoteId, tagIds);
+        }
+        
+        lastSavedContent = content;
+        lastSavedTitle = title;
+        console.log('Note and tags saved successfully');
+        return true;
+    } catch (error) {
+        console.error('Error saving note:', error);
+        return false;
+    }
+}
+
 // Make saveNoteToDatabase globally accessible
 window.saveNoteToDatabase = saveNoteToDatabase;
+window.saveNoteExplicitly = saveNoteExplicitly;
 window.setLastSaved = (title, content) => {
     if (title !== undefined && content !== undefined) {
         lastSavedTitle = title;

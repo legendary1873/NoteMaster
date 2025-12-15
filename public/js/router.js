@@ -143,12 +143,16 @@ function initRouter() {
     const btnSaveNote = document.getElementById('btn-save-note');
     if (btnSaveNote) {
         btnSaveNote.addEventListener('click', async () => {
-            if (window.saveNoteToDatabase) {
-                await window.saveNoteToDatabase();
-                alert('Note saved successfully!');
-                // Navigate back to notes list
-                goToPage(PAGES.NOTES_LIST);
-                loadNotesList();
+            if (window.saveNoteExplicitly) {
+                const success = await window.saveNoteExplicitly();
+                if (success) {
+                    alert('Note saved successfully!');
+                    // Navigate back to notes list
+                    goToPage(PAGES.NOTES_LIST);
+                    loadNotesList();
+                } else {
+                    alert('Failed to save note');
+                }
             }
         });
     }
