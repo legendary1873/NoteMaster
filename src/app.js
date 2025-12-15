@@ -1,7 +1,9 @@
 const editor = document.getElementById('editor');
 const noteTitle = document.getElementById('note-title');
-const AUTO_SAVE_INTERVAL = 3000;
+const AUTO_SAVE_INTERVAL = 3000; // 3 seconds
 let autoSaveTimer;
+let lastSavedContent = '';
+let lastSavedTitle = '';
 
 // Initialize app when DOM is ready
 function initApp() {
@@ -23,7 +25,6 @@ function setupOnlineOfflineHandling() {
             statusIndicator.querySelector('.status-text').textContent = 'Online';
         }
         await syncPendingChanges();
-        // Reload notes from server
         await window.loadNotesList?.();
     });
     
@@ -71,28 +72,46 @@ async function syncPendingChanges() {
 // Show notification
 function showNotification(message) {
     console.log('Notification:', message);
-    // You can add a toast notification here
 }
 
 // Setup auto-save on input (saves to database)
 function setupAutoSave() {
-    if (editor) {
-        editor.addEventListener('input', () => {
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(() => {
-                saveNoteToDatabase();
-            }, AUTO_SAVE_INTERVAL);
-        });
+    if (!editor || !noteTitle) {
+        console.warn('Editor or note title element not found');
+        return;
     }
+
+    // Auto-save on editor input
+    editor.addEventListener('input', () => {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            saveNoteToDatabase();
+        }, AUTO_SAVE_INTERVAL);
+    });
     
-    if (noteTitle) {
-        noteTitle.addEventListener('input', () => {
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(() => {
-                saveNoteToDatabase();
-            }, AUTO_SAVE_INTERVAL);
-        });
-    }
+    // Auto-save on title input
+    noteTitle.addEventListener('input', () => {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            saveNoteToDatabase();
+        }, AUTO_SAVE_INTERVAL);
+    });
+
+    // Save when editor loses focus
+    editor.addEventListener('blur', () => {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            saveNoteToDatabase();
+        }, 500);
+    });
+
+    // Save title on change
+    noteTitle.addEventListener('change', () => {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            saveNoteToDatabase();
+        }, 500);
+    });
 }
 
 // Save note to database
@@ -105,10 +124,19 @@ async function saveNoteToDatabase() {
     const title = (noteTitle?.value || 'Untitled Note').trim();
     const content = editor?.innerHTML || '';
 
+    // Don't save if nothing changed
+    if (title === lastSavedTitle && content === lastSavedContent) {
+        console.log('No changes detected, skipping save');
+        return;
+    }
+
     try {
+        console.log('Auto-saving note:', window.currentNoteId);
         const result = await updateNote(window.currentNoteId, title, content);
         if (result) {
-            console.log('Note auto-saved to database');
+            lastSavedContent = content;
+            lastSavedTitle = title;
+            console.log('Note auto-saved successfully');
         }
     } catch (error) {
         console.error('Error auto-saving note:', error);
@@ -117,6 +145,10 @@ async function saveNoteToDatabase() {
 
 // Make saveNoteToDatabase globally accessible
 window.saveNoteToDatabase = saveNoteToDatabase;
+window.setLastSaved = (title, content) => {
+    lastSavedTitle = title;
+    lastSavedContent = content;
+};
 
 // Register service worker
 function registerServiceWorker() {

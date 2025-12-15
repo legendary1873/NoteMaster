@@ -1,184 +1,248 @@
-// Notes Manager - Handles UI for notes list and interactions
-let currentNoteId = null;
+/**
+ * Notes Manager - Handles UI for notes list, editor, and dashboard
+ * Works with multi-page architecture
+ */
+
+// Global state
 let allNotes = [];
 let filteredNotes = [];
+let allTags = [];
 
-const notesList = document.getElementById('notes-list');
-const newNoteBtn = document.getElementById('new-note-btn');
-const noteTitle = document.getElementById('note-title');
-const editor = document.getElementById('editor');
-const saveBtn = document.getElementById('save-btn');
-const deleteBtn = document.getElementById('delete-btn');
-const searchInput = document.getElementById('search-input');
-
-// Load all notes and populate the list
-async function loadNotesList() {
+/**
+ * Refresh Dashboard
+ */
+async function refreshDashboard() {
     try {
-        allNotes = await getAllNotes();
-        renderNotesList();
+        const notes = await getAllNotes();
+        const tags = await getTags();
+        
+        document.getElementById('stat-total-notes').textContent = notes.length;
+        document.getElementById('stat-total-tags').textContent = tags.length;
     } catch (error) {
-        console.error('Error loading notes list:', error);
+        console.error('Error refreshing dashboard:', error);
     }
 }
 
-// Render the notes list
-function renderNotesList() {
-    notesList.innerHTML = '';
-    
-    const notesToRender = filteredNotes.length > 0 && searchInput.value.trim() ? filteredNotes : allNotes;
-    
-    if (notesToRender.length === 0) {
-        const message = searchInput.value.trim() 
-            ? '<p class="empty-message">No notes found</p>'
-            : '<p class="empty-message">No notes yet. Create one!</p>';
-        notesList.innerHTML = message;
+/**
+ * Refresh Notes List Page
+ */
+async function refreshNotesList() {
+    try {
+        allNotes = await getAllNotes();
+        allTags = await getTags();
+        displayNotesList(allNotes);
+        displayFilterTags(allTags, new Set());
+    } catch (error) {
+        console.error('Error refreshing notes list:', error);
+    }
+}
+
+/**
+ * Display notes in the grid
+ * @param {Array} notes - Notes to display
+ */
+function displayNotesList(notes) {
+    const notesGrid = document.getElementById('notes-grid');
+    if (!notesGrid) return;
+
+    if (!notes || notes.length === 0) {
+        notesGrid.innerHTML = '<p class="empty-message">No notes yet. Create your first note!</p>';
         return;
     }
 
-    notesToRender.forEach(note => {
-        const noteItem = document.createElement('div');
-        noteItem.className = `note-item ${currentNoteId === note.id ? 'active' : ''}`;
-        noteItem.innerHTML = `
-            <div class="note-item-content">
-                <h4>${escapeHtml(note.title || 'Untitled')}</h4>
-                <p class="note-preview">${escapeHtml((note.content || '').substring(0, 50))}</p>
+    notesGrid.innerHTML = notes.map(note => `
+        <div class="note-card" data-note-id="${note.id}">
+            <h3>${escapeHtml(note.title || 'Untitled')}</h3>
+            <p class="note-preview">${escapeHtml((note.content || '').substring(0, 100))}</p>
+            <div class="note-meta">
+                <span class="note-date">${new Date(note.updated_at).toLocaleDateString()}</span>
             </div>
-        `;
-        noteItem.addEventListener('click', () => loadNote(note.id));
-        notesList.appendChild(noteItem);
+        </div>
+    `).join('');
+
+    // Add click listeners
+    notesGrid.querySelectorAll('.note-card').forEach(card => {
+        card.addEventListener('click', async () => {
+            const noteId = parseInt(card.dataset.noteId);
+            await loadNoteIntoEditor(noteId);
+            goToPage(PAGES.EDITOR);
+        });
     });
 }
 
-// Load a specific note
-async function loadNote(noteId) {
+/**
+ * Load note into editor
+ * @param {number} noteId - Note ID to load
+ */
+async function loadNoteIntoEditor(noteId) {
     try {
         const note = await getNote(noteId);
-        if (note) {
-            currentNoteId = note.id;
-            noteTitle.value = note.title;
-            editor.innerHTML = note.content || '';
-            renderNotesList(); // Update active state
+        if (!note) {
+            alert('Note not found');
+            return;
+        }
+
+        window.currentNoteId = note.id;
+        
+        // Load note data
+        const noteTitle = document.getElementById('note-title');
+        const editor = document.getElementById('editor');
+        
+        if (noteTitle) noteTitle.value = note.title || 'Untitled';
+        if (editor) editor.innerHTML = note.content || '';
+
+        // Load and display tags
+        const tags = await getNoteTagsAPI(noteId);
+        window.currentNoteTags = tags;
+        displayNoteTags(tags);
+
+        // Reset auto-save tracking
+        if (window.setLastSaved) {
+            window.setLastSaved();
         }
     } catch (error) {
-        console.error('Error loading note:', error);
+        console.error('Error loading note into editor:', error);
+        alert('Failed to load note');
     }
 }
 
-// Create new note
-newNoteBtn.addEventListener('click', async () => {
+/**
+ * Create a new note with auto-naming
+ */
+async function createNewNote() {
     try {
-        const newNote = await createNote('Untitled Note', '');
+        // Get count of untitled notes to determine next number
+        const notes = await getAllNotes();
+        const untitledNotes = notes.filter(n => n.title && n.title.startsWith('Untitled'));
+        const nextNumber = untitledNotes.length + 1;
+        const newTitle = `Untitled-${nextNumber}`;
+
+        const newNote = await createNote(newTitle, '');
         if (newNote) {
-            currentNoteId = newNote.id;
-            allNotes.unshift(newNote);
-            noteTitle.value = newNote.title;
-            editor.innerHTML = '';
-            renderNotesList();
-            noteTitle.focus();
+            window.currentNoteId = newNote.id;
+            window.currentNoteTags = [];
+            
+            // Load into editor
+            const noteTitle = document.getElementById('note-title');
+            const editor = document.getElementById('editor');
+            
+            if (noteTitle) noteTitle.value = newTitle;
+            if (editor) editor.innerHTML = '';
+            
+            displayNoteTags([]);
+            
+            // Reset auto-save tracking
+            if (window.setLastSaved) {
+                window.setLastSaved();
+            }
+
+            return newNote.id;
         }
     } catch (error) {
         console.error('Error creating note:', error);
+        alert('Failed to create note');
     }
-});
+}
 
-// Save note
-saveBtn.addEventListener('click', async () => {
-    if (!currentNoteId) {
-        alert('Please select or create a note first');
-        return;
-    }
-
-    const title = noteTitle.value.trim() || 'Untitled Note';
-    const content = editor.innerHTML;
+/**
+ * Delete current note
+ */
+async function deleteCurrentNote() {
+    if (!window.currentNoteId) return false;
 
     try {
-        // Show saving state
-        const originalText = saveBtn.textContent;
-        saveBtn.textContent = 'Saving...';
-        saveBtn.disabled = true;
-        
-        const updated = await updateNote(currentNoteId, title, content);
-        if (updated) {
-            // Update in local list
-            const noteIndex = allNotes.findIndex(n => n.id === currentNoteId);
-            if (noteIndex !== -1) {
-                allNotes[noteIndex] = { ...allNotes[noteIndex], title, content };
-            }
-            renderNotesList();
-            
-            // Show success
-            saveBtn.textContent = '✓ Saved';
-            setTimeout(() => {
-                saveBtn.textContent = originalText;
-                saveBtn.disabled = false;
-            }, 2000);
-        }
-    } catch (error) {
-        console.error('Error saving note:', error);
-        saveBtn.textContent = 'Error saving';
-        saveBtn.disabled = false;
-        setTimeout(() => {
-            saveBtn.textContent = 'Save';
-        }, 2000);
-    }
-});
-
-// Delete note
-deleteBtn.addEventListener('click', async () => {
-    if (!currentNoteId) {
-        alert('Please select a note to delete');
-        return;
-    }
-
-    if (!confirm('Are you sure you want to delete this note?')) {
-        return;
-    }
-
-    try {
-        const result = await deleteNote(currentNoteId);
+        const result = await deleteNote(window.currentNoteId);
         if (result) {
-            allNotes = allNotes.filter(n => n.id !== currentNoteId);
-            currentNoteId = null;
-            noteTitle.value = '';
-            editor.innerHTML = '';
-            renderNotesList();
-            alert('Note deleted successfully');
+            window.currentNoteId = null;
+            window.currentNoteTags = [];
+            return true;
         }
     } catch (error) {
         console.error('Error deleting note:', error);
         alert('Failed to delete note');
     }
-});
+    return false;
+}
 
-// Update note title in real-time
-noteTitle.addEventListener('change', () => {
-    // Title will be saved when user clicks Save button
-});
+/**
+ * Filter notes by selected tags
+ */
+async function filterNotesByTags() {
+    const selectedTags = getSelectedFilterTags();
+    const searchQuery = document.getElementById('search-notes').value.trim();
 
-// Escape HTML to prevent XSS
+    try {
+        let notes = allNotes;
+
+        // Filter by search query
+        if (searchQuery) {
+            notes = await searchNotes(searchQuery);
+        }
+
+        // Filter by selected tags
+        if (selectedTags.size > 0) {
+            notes = notes.filter(note => {
+                const noteTags = note.tags || [];
+                return noteTags.some(tag => selectedTags.has(tag.id));
+            });
+        }
+
+        displayNotesList(notes);
+    } catch (error) {
+        console.error('Error filtering notes:', error);
+    }
+}
+
+/**
+ * Search notes
+ */
+async function initSearchNotes() {
+    const searchInput = document.getElementById('search-notes');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', async (e) => {
+        const query = e.target.value.trim();
+
+        if (!query) {
+            displayNotesList(allNotes);
+            return;
+        }
+
+        try {
+            const results = await searchNotes(query);
+            displayNotesList(results);
+        } catch (error) {
+            console.error('Error searching notes:', error);
+            displayNotesList([]);
+        }
+    });
+}
+
+/**
+ * Escape HTML to prevent XSS
+ * @param {string} text - Text to escape
+ * @returns {string} Escaped HTML
+ */
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// Load notes list when manager is initialized
-document.addEventListener('DOMContentLoaded', loadNotesList);
+/**
+ * Initialize notes manager
+ */
+function initNotesManager() {
+    initSearchNotes();
+}
 
-// Search functionality
-searchInput.addEventListener('input', async (e) => {
-    const query = e.target.value.trim();
-    
-    if (!query) {
-        filteredNotes = [];
-        renderNotesList();
-        return;
-    }
-    
-    try {
-        filteredNotes = await searchNotes(query);
-        renderNotesList();
-    } catch (error) {
-        console.error('Error searching notes:', error);
-    }
-});
+// Export functions globally for router
+window.refreshDashboard = refreshDashboard;
+window.refreshNotesList = refreshNotesList;
+window.loadNoteIntoEditor = loadNoteIntoEditor;
+window.createNewNote = createNewNote;
+window.deleteCurrentNote = deleteCurrentNote;
+window.filterNotesByTags = filterNotesByTags;
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initNotesManager);

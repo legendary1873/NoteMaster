@@ -4,80 +4,154 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>NoteMaster</title>
-        <meta name="description" content="">
+        <meta name="description" content="A feature-rich note-taking PWA">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link id="theme-stylesheet" rel="stylesheet" href="css/style.css">
         <link rel="manifest" href="manifest.json">
     </head>
     <body>
-        <div id="wrapper">
-            <!-- Notes Panel -->
-            <aside id="notes-panel">
-                <div id="notes-header">
-                    <h2>Notes</h2>
-                    <button id="new-note-btn" title="Create new note">+ New</button>
+        <!-- Home Page -->
+        <div id="page-home" class="page active">
+            <div class="home-container">
+                <div class="home-content">
+                    <h1>NoteMaster</h1>
+                    <p>Your personal note-taking application</p>
+                    <div class="home-actions">
+                        <button id="btn-go-dashboard" class="btn btn-primary">Get Started</button>
+                    </div>
                 </div>
-                <div id="search-container">
-                    <input id="search-input" type="text" placeholder="Search notes...">
-                </div>
-                <div id="notes-list"></div>
-            </aside>
-
-            <!-- Editor Section -->
-            <div id="editor-section">
-                <!-- Title and Save Bar -->
-                <div id="title-bar">
-                    <input id="note-title" type="text" placeholder="Note title...">
-                    <button id="save-btn" title="Save note">Save</button>
-                    <button id="delete-btn" title="Delete note">Delete</button>
-                </div>
-                
-                <!-- Editor -->
-                <div id="editor" contenteditable="true" placeholder="Type your notes here..."></div>
-            </div>
-
-            <!-- Formatting Sidebar -->
-            <aside id="formatting-sidebar">
-                <h3>Format</h3>
-                <button id="bold-btn" title="Bold">
-                    <strong>B</strong>
-                </button>
-                <button id="italic-btn" title="Italic">
-                    <em>I</em>
-                </button>
-                <button id="heading1-btn" title="Heading 1">
-                    H1
-                </button>
-                <button id="heading2-btn" title="Heading 2">
-                    H2
-                </button>
-                <button id="normal-btn" title="Normal Text">
-                    N
-                </button>
-                <button id="bullet-btn" title="Bullet List">
-                    • List
-                </button>
-                <button id="numbered-btn" title="Numbered List">
-                    1. List
-                </button>
-            </aside>
-
-            <!-- Theme Toggle -->
-            <button id="themeToggle" aria-label="Toggle dark mode">
-                <svg id="moon-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button>
-
-            <!-- Status Indicator -->
-            <div id="status-indicator" class="online" title="Online">
-                <span class="status-dot"></span>
-                <span class="status-text">Online</span>
             </div>
         </div>
+
+        <!-- Dashboard Page -->
+        <div id="page-dashboard" class="page">
+            <div class="dashboard-container">
+                <header class="dashboard-header">
+                    <h2>Dashboard</h2>
+                    <button id="btn-home" class="btn btn-secondary">Home</button>
+                </header>
+                <div class="dashboard-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="stat-total-notes">0</div>
+                            <div class="stat-label">Total Notes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="stat-total-tags">0</div>
+                            <div class="stat-label">Total Tags</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button id="btn-go-notes" class="btn btn-primary">View Notes</button>
+                        <button id="btn-new-note-dashboard" class="btn btn-success">Create Note</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes List Page -->
+        <div id="page-notes-list" class="page">
+            <div class="notes-list-container">
+                <header class="notes-header">
+                    <h2>My Notes</h2>
+                    <div class="header-actions">
+                        <button id="btn-dashboard" class="btn btn-secondary">Dashboard</button>
+                        <button id="btn-new-note" class="btn btn-success">+ New Note</button>
+                    </div>
+                </header>
+
+                <div class="search-filter-section">
+                    <div class="search-box">
+                        <input id="search-notes" type="text" placeholder="Search notes by title or content...">
+                    </div>
+                    <div class="filter-section">
+                        <label>Filter by tags:</label>
+                        <div id="tags-filter" class="tags-filter"></div>
+                    </div>
+                </div>
+
+                <div id="notes-grid" class="notes-grid">
+                    <p class="empty-message">No notes yet. Create your first note!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor Page -->
+        <div id="page-editor" class="page">
+            <div class="editor-container">
+                <header class="editor-header">
+                    <h2>Editor</h2>
+                    <div class="header-actions">
+                        <button id="btn-notes" class="btn btn-secondary">Back to Notes</button>
+                        <button id="btn-save-note" class="btn btn-primary">Save</button>
+                        <button id="btn-delete-note" class="btn btn-danger">Delete</button>
+                    </div>
+                </header>
+
+                <div class="editor-content">
+                    <div class="editor-main">
+                        <div class="title-section">
+                            <input id="note-title" type="text" placeholder="Note title...">
+                        </div>
+
+                        <div class="tags-section">
+                            <label>Tags:</label>
+                            <div id="note-tags" class="note-tags"></div>
+                            <button id="btn-manage-tags" class="btn btn-small">Manage Tags</button>
+                        </div>
+
+                        <div class="editor-toolbar">
+                            <h4>Format</h4>
+                            <button id="btn-bold" class="btn btn-toolbar" title="Bold"><strong>B</strong></button>
+                            <button id="btn-italic" class="btn btn-toolbar" title="Italic"><em>I</em></button>
+                            <button id="btn-heading1" class="btn btn-toolbar" title="Heading 1">H1</button>
+                            <button id="btn-heading2" class="btn btn-toolbar" title="Heading 2">H2</button>
+                            <button id="btn-normal" class="btn btn-toolbar" title="Normal Text">N</button>
+                            <button id="btn-bullet" class="btn btn-toolbar" title="Bullet List">• List</button>
+                            <button id="btn-numbered" class="btn btn-toolbar" title="Numbered List">1. List</button>
+                        </div>
+
+                        <div id="editor" contenteditable="true" class="editor-area"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tags Manager Modal -->
+        <div id="modal-tags" class="modal">
+            <div class="modal-content">
+                <header class="modal-header">
+                    <h3>Manage Tags</h3>
+                    <button id="btn-close-tags-modal" class="btn btn-close">&times;</button>
+                </header>
+                <div class="modal-body">
+                    <div class="tag-input-section">
+                        <input id="new-tag-input" type="text" placeholder="Enter tag name...">
+                        <button id="btn-create-tag" class="btn btn-primary">Create Tag</button>
+                    </div>
+                    <div id="tags-list" class="tags-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggle" aria-label="Toggle dark mode" class="btn-theme-toggle">
+            <svg id="moon-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+
+        <!-- Status Indicator -->
+        <div id="status-indicator" class="online" title="Online">
+            <span class="status-dot"></span>
+            <span class="status-text">Online</span>
+        </div>
+
         <script src="js/api-client.js"></script>
         <script src="js/theme-toggle.js"></script>
+        <script src="js/router.js"></script>
         <script src="js/formatter.js"></script>
+        <script src="js/tags-manager.js"></script>
         <script src="js/notes-manager.js"></script>
         <script src="../src/app.js"></script>
     </body>

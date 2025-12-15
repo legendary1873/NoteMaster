@@ -1,3 +1,6 @@
+/* Dark Theme for NoteMaster */
+
+/* Fonts */
 @font-face {
     font-family: "iAWriterMono";
     src: url("../fonts/iAWriterMonoS-Regular.ttf") format("truetype");
@@ -26,411 +29,285 @@
     font-style: italic;
 }
 
-body {
-    background-color: #3a3b3c;
-    margin: 0;
-    font-family: "iAWriterMono", monospace;
+/* Global Dark Theme */
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
 }
 
-div#wrapper {
-    display: flex;
-    gap: 20px;
-    margin: 20px;
-    position: relative;
-    height: 90vh;
+body.dark-mode .page {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
 }
 
-#notes-panel {
-    width: 250px;
-    background-color: #2a2b2c;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
+body.dark-mode #page-home {
+    background: linear-gradient(135deg, #5a6f99 0%, #6a4a94 100%);
 }
 
-#notes-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #444;
+body.dark-mode .home-content h1,
+body.dark-mode .home-content p {
+    color: #ffffff;
 }
 
-#notes-header h2 {
-    margin: 0;
-    font-family: "iAWriterMono", monospace;
-    font-size: 18px;
-    color: #ddd;
-}
-
-#search-container {
-    margin-bottom: 15px;
-}
-
-#search-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #444;
-    border-radius: 8px;
-    font-family: "iAWriterMono", monospace;
-    font-size: 12px;
-    box-sizing: border-box;
-    background-color: #3a3b3c;
+/* Buttons - Dark Mode */
+body.dark-mode .btn {
     color: white;
 }
 
-#search-input:focus {
-    outline: none;
+body.dark-mode .btn-primary,
+body.dark-mode .btn-success {
+    background-color: #4CAF50;
+}
+
+body.dark-mode .btn-primary:hover,
+body.dark-mode .btn-success:hover {
+    background-color: #45a049;
+}
+
+body.dark-mode .btn-secondary {
+    background-color: #555;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: #666;
+}
+
+body.dark-mode .btn-danger {
+    background-color: #f44336;
+}
+
+body.dark-mode .btn-danger:hover {
+    background-color: #da190b;
+}
+
+/* Dashboard - Dark Mode */
+body.dark-mode .dashboard-container,
+body.dark-mode .notes-list-container,
+body.dark-mode .editor-container {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dashboard-header,
+body.dark-mode .notes-header,
+body.dark-mode .editor-header {
+    border-bottom-color: #4CAF50;
+    color: #e0e0e0;
+}
+
+body.dark-mode .stat-card {
+    background-color: #2a2a2a;
+    border-left-color: #4CAF50;
+    color: #e0e0e0;
+}
+
+body.dark-mode .stat-number {
+    color: #4CAF50;
+}
+
+body.dark-mode .stat-label {
+    color: #999;
+}
+
+/* Search and Filter - Dark Mode */
+body.dark-mode .search-filter-section {
+    background-color: #2a2a2a;
+}
+
+body.dark-mode .search-box input {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .search-box input:focus {
     border-color: #4CAF50;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
 }
 
-#new-note-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: "iAWriterMono", monospace;
-    font-size: 12px;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
+body.dark-mode .filter-section {
+    color: #e0e0e0;
 }
 
-#new-note-btn:hover {
-    background-color: #45a049;
+body.dark-mode .filter-tag {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
-#notes-list {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.note-item {
-    padding: 12px;
-    background-color: #3a3b3c;
-    border: 1px solid #444;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
-
-.note-item:hover {
-    background-color: #4a4b4c;
+body.dark-mode .filter-tag:hover {
     border-color: #4CAF50;
-    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+    background-color: #2a4a2a;
 }
 
-.note-item.active {
+body.dark-mode .filter-tag.active {
     background-color: #4CAF50;
     color: white;
-    border-color: #45a049;
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    border-color: #4CAF50;
 }
 
-.note-item h4 {
-    margin: 0 0 5px 0;
-    font-family: "iAWriterMono", monospace;
-    font-size: 14px;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #ddd;
+/* Notes Grid - Dark Mode */
+body.dark-mode .note-card {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
-.note-item.active h4 {
-    color: white;
+body.dark-mode .note-card:hover {
+    background-color: #3a3a3a;
+    border-color: #4CAF50;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
-.note-item-content {
-    min-width: 0;
+body.dark-mode .note-card h3 {
+    color: #e0e0e0;
 }
 
-.note-preview {
-    margin: 0;
-    font-family: "iAWriterMono", monospace;
-    font-size: 12px;
-    color: #888;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+body.dark-mode .note-preview {
+    color: #999;
 }
 
-.note-item.active .note-preview {
-    color: rgba(255, 255, 255, 0.8);
+body.dark-mode .note-meta {
+    border-top-color: #444;
 }
 
-.empty-message {
-    text-align: center;
+body.dark-mode .note-date {
     color: #666;
-    font-family: "iAWriterMono", monospace;
-    font-size: 13px;
-    padding: 20px;
 }
 
-#editor-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+body.dark-mode .empty-message {
+    color: #666;
 }
 
-#title-bar {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #444;
+/* Editor - Dark Mode */
+body.dark-mode #note-title {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
-#note-title {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #444;
-    border-radius: 8px;
-    font-family: "iAWriterMono", monospace;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #3a3b3c;
-    color: white;
-}
-
-#note-title:focus {
-    outline: none;
+body.dark-mode #note-title:focus {
     border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
 }
 
-#save-btn, #delete-btn {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: "iAWriterMono", monospace;
-    font-size: 13px;
-    font-weight: bold;
-    transition: all 0.2s ease;
+body.dark-mode #editor {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
-#save-btn {
+body.dark-mode #editor:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+/* Tags Section - Dark Mode */
+body.dark-mode .tags-section {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .tags-section label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .tag-badge {
     background-color: #4CAF50;
     color: white;
 }
 
-#save-btn:hover {
-    background-color: #45a049;
+body.dark-mode .no-tags {
+    color: #666;
 }
 
-#delete-btn {
+/* Toolbar - Dark Mode */
+body.dark-mode .editor-toolbar {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-toolbar h4 {
+    color: #999;
+}
+
+body.dark-mode .btn-toolbar {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .btn-toolbar:hover {
+    background-color: #4a4a4a;
+    border-color: #4CAF50;
+}
+
+/* Modal - Dark Mode */
+body.dark-mode .modal-content {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .modal-header {
+    border-bottom-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .modal-body {
+    color: #e0e0e0;
+}
+
+body.dark-mode .tag-input-section input {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .tag-input-section input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+body.dark-mode .tag-item {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .btn-delete-tag {
     background-color: #f44336;
-    color: white;
 }
 
-#delete-btn:hover {
+body.dark-mode .btn-delete-tag:hover {
     background-color: #da190b;
 }
 
-#themeToggle {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 50%;
-    transition: transform 0.2s ease;
-    z-index: 1000;
+/* Theme Toggle - Dark Mode */
+body.dark-mode .btn-theme-toggle {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
-#themeToggle:hover {
-    transform: scale(1.1);
+body.dark-mode .btn-theme-toggle svg {
+    color: #e0e0e0;
 }
 
-#status-indicator {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background-color: #2a2b2c;
-    border: 1px solid #444;
-    border-radius: 20px;
-    font-family: "iAWriterMono", monospace;
-    font-size: 12px;
-    color: #ddd;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    z-index: 999;
+/* Status Indicator - Dark Mode */
+body.dark-mode #status-indicator {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
 }
 
-#status-indicator.online {
+body.dark-mode #status-indicator.online {
     border-color: #4CAF50;
     background-color: #1f3d2d;
 }
 
-#status-indicator.offline {
+body.dark-mode #status-indicator.offline {
     border-color: #f44336;
     background-color: #3d1f1f;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    animation: pulse 2s infinite;
-}
-
-#status-indicator.online .status-dot {
-    background-color: #4CAF50;
-}
-
-#status-indicator.offline .status-dot {
-    background-color: #f44336;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-#editor {
-    border: 1px solid #444;
-    border-radius: 8px;
-    outline: none;
-    flex: 1;
-    background-color: #3a3b3c;
-    width: auto;
-    height: auto;
-    font-family: "iAWriterMono", monospace;
-    color: white;
-    font-size: 16px;
-    padding: 10px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    line-height: 1.6;
-    resize: none;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-#editor:empty:before {
-    content: attr(placeholder);
-    color: #999;
-    pointer-events: none;
-}
-
-#editor:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-}
-
-#editor p {
-    margin: 0 0 10px 0;
-}
-
-#editor h1,
-#editor h2 {
-    font-family: "iAWriterMono", monospace;
-    margin: 20px 0 10px 0;
-    line-height: 1.4;
-    font-weight: bold;
-}
-
-#editor h1 {
-    font-size: 28px;
-}
-
-#editor h2 {
-    font-size: 24px;
-}
-
-#editor h1[style*="font-weight: normal"],
-#editor h2[style*="font-weight: normal"] {
-    font-weight: normal !important;
-}
-
-#editor h1[style*="font-style: normal"],
-#editor h2[style*="font-style: normal"] {
-    font-style: normal !important;
-}
-
-#editor ul,
-#editor ol {
-    margin: 10px 0;
-    padding-left: 40px;
-}
-
-#editor li {
-    margin: 5px 0;
-}
-
-#editor strong {
-    font-weight: bold;
-}
-
-#editor em {
-    font-style: italic;
-}
-
-#formatting-sidebar {
-    width: 100px;
-    padding: 15px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background-color: #2a2b2c;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    margin-left: 20px;
-    height: fit-content;
-}
-
-#formatting-sidebar h3 {
-    margin: 0 0 8px 0;
-    font-family: "iAWriterMono", monospace;
-    font-size: 13px;
-    text-align: center;
-    color: #ddd;
-    font-weight: bold;
-}
-
-#formatting-sidebar button {
-    padding: 10px;
-    border: 1px solid #555;
-    background-color: #3a3b3c;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: "iAWriterMono", monospace;
-    font-size: 12px;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    color: #ddd;
-}
-
-#formatting-sidebar button:hover {
-    background-color: #4a4b4c;
-    border-color: #4CAF50;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
 }
 
 #formatting-sidebar button:active {
