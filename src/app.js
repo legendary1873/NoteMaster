@@ -127,27 +127,41 @@ async function saveNoteToDatabase() {
     // Don't save if nothing changed
     if (title === lastSavedTitle && content === lastSavedContent) {
         console.log('No changes detected, skipping save');
-        return;
+        return true; // Return true to indicate no error, even though nothing saved
     }
 
     try {
         console.log('Auto-saving note:', window.currentNoteId);
+        console.log('Title:', title);
+        console.log('Content:', content);
         const result = await updateNote(window.currentNoteId, title, content);
         if (result) {
             lastSavedContent = content;
             lastSavedTitle = title;
             console.log('Note auto-saved successfully');
+            console.log('Result:', result);
+            return true;
         }
+        return false;
     } catch (error) {
         console.error('Error auto-saving note:', error);
+        return false;
     }
 }
 
 // Make saveNoteToDatabase globally accessible
 window.saveNoteToDatabase = saveNoteToDatabase;
 window.setLastSaved = (title, content) => {
-    lastSavedTitle = title;
-    lastSavedContent = content;
+    if (title !== undefined && content !== undefined) {
+        lastSavedTitle = title;
+        lastSavedContent = content;
+    } else {
+        // If called without parameters, use current values
+        const noteTitle = document.getElementById('note-title');
+        const editor = document.getElementById('editor');
+        lastSavedTitle = (noteTitle?.value || 'Untitled Note').trim();
+        lastSavedContent = editor?.innerHTML || '';
+    }
 };
 
 // Register service worker

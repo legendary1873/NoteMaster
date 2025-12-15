@@ -40,13 +40,27 @@ async function refreshNotesList() {
 /**
  * Display notes in the grid
  * @param {Array} notes - Notes to display
+ * @param {boolean} isFiltered - Whether the results are filtered/searched
  */
-function displayNotesList(notes) {
+function displayNotesList(notes, isFiltered = false) {
     const notesGrid = document.getElementById('notes-grid');
     if (!notesGrid) return;
 
     if (!notes || notes.length === 0) {
-        notesGrid.innerHTML = '<p class="empty-message">No notes yet. Create your first note!</p>';
+        let emptyMessage = 'No notes yet. Create your first note!';
+        
+        // Determine if we're showing search/filter results
+        const searchQuery = document.getElementById('search-notes')?.value.trim() || '';
+        const hasActiveFilters = document.querySelectorAll('#tags-filter .filter-tag.active').length > 0;
+        
+        if (searchQuery || hasActiveFilters) {
+            emptyMessage = 'No notes found matching your search or filters.';
+        } else if (allNotes && allNotes.length > 0) {
+            // If there are notes but they're all filtered out
+            emptyMessage = 'No notes found matching your search or filters.';
+        }
+        
+        notesGrid.innerHTML = `<p class="empty-message">${emptyMessage}</p>`;
         return;
     }
 

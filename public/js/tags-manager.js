@@ -28,18 +28,67 @@ function displayTagsList(tags) {
         return;
     }
 
-    tagsList.innerHTML = tags.map(tag => `
-        <div class="tag-item">
-            <span class="tag-name">${escapeHtml(tag.name)}</span>
-            <button class="btn-delete-tag" data-tag-id="${tag.id}" title="Delete tag">
-                ×
-            </button>
-        </div>
-    `).join('');
+    // Check if we're in the editor context
+    const isInEditor = window.currentNoteId !== undefined && window.currentNoteId !== null;
+    const currentNoteTags = window.currentNoteTags || [];
+    const currentTagIds = new Set(currentNoteTags.map(t => t.id));
+
+    tagsList.innerHTML = tags.map(tag => {
+        const isAssigned = currentTagIds.has(tag.id);
+        if (isInEditor) {
+            // In editor context: show add/remove buttons
+            return `
+                <div class="tag-item">
+                    <span class="tag-name">${escapeHtml(tag.name)}</span>
+                    <div class="tag-actions">
+                        ${isAssigned ? 
+                            `<button class="btn-remove-tag" data-tag-id="${tag.id}" title="Remove tag from note">✓ Assigned</button>` :
+                            `<button class="btn-add-tag" data-tag-id="${tag.id}" title="Add tag to note">+ Add</button>`
+                        }
+                        <button class="btn-delete-tag" data-tag-id="${tag.id}" title="Delete tag">×</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            // In tags-only context: show only delete button
+            return `
+                <div class="tag-item">
+                    <span class="tag-name">${escapeHtml(tag.name)}</span>
+                    <button class="btn-delete-tag" data-tag-id="${tag.id}" title="Delete tag">
+                        ×
+                    </button>
+                </div>
+            `;
+        }
+    }).join('');
+
+    // Add add tag listeners (when in editor context)
+    tagsList.querySelectorAll('.btn-add-tag').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const tagId = parseInt(btn.dataset.tagId);
+            await addTagToNote(tagId);
+            refreshTagsModal();
+        });
+    });
+
+    // Add remove tag listeners (when in editor context)
+    tagsList.querySelectorAll('.btn-remove-tag').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const tagId = parseInt(btn.dataset.tagId);
+            await removeTagFromNote(window.currentNoteId, tagId);
+            refreshTagsModal();
+        });
+    });
 
     // Add delete tag listeners
     tagsList.querySelectorAll('.btn-delete-tag').forEach(btn => {
         btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const tagId = parseInt(btn.dataset.tagId);
             if (confirm('Are you sure you want to delete this tag?')) {
                 await deleteTag(tagId);

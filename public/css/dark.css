@@ -225,6 +225,7 @@ body.dark-mode .no-tags {
 body.dark-mode .editor-toolbar {
     background-color: #2a2a2a;
     color: #e0e0e0;
+    border-color: #444;
 }
 
 body.dark-mode .editor-toolbar h4 {
@@ -240,6 +241,24 @@ body.dark-mode .btn-toolbar {
 body.dark-mode .btn-toolbar:hover {
     background-color: #4a4a4a;
     border-color: #4CAF50;
+}
+
+/* Editor Content and Layout - Dark Mode */
+body.dark-mode .editor-content {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .editor-main {
+    gap: 15px;
+}
+
+body.dark-mode .title-section {
+    display: flex;
+}
+
+body.dark-mode .header-actions {
+    display: flex;
+    gap: 10px;
 }
 
 /* Modal - Dark Mode */
@@ -272,6 +291,32 @@ body.dark-mode .tag-item {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+}
+
+body.dark-mode .tag-name {
+    color: #e0e0e0;
+}
+
+body.dark-mode .tag-actions {
+    display: flex;
+    gap: 8px;
+}
+
+body.dark-mode .btn-add-tag,
+body.dark-mode .btn-remove-tag {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+body.dark-mode .btn-add-tag:hover,
+body.dark-mode .btn-remove-tag:hover {
+    background-color: #45a049;
 }
 
 body.dark-mode .btn-delete-tag {
@@ -308,6 +353,55 @@ body.dark-mode #status-indicator.online {
 body.dark-mode #status-indicator.offline {
     border-color: #f44336;
     background-color: #3d1f1f;
+}
+
+/* Editor Area - Dark Mode */
+body.dark-mode .editor-area {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-area:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+body.dark-mode .editor-area strong {
+    color: #ffffff;
+}
+
+body.dark-mode .editor-area em {
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-area h1,
+body.dark-mode .editor-area h2 {
+    color: #ffffff;
+}
+
+/* Notes List - Dark Mode */
+body.dark-mode .notes-grid {
+    gap: 15px;
+}
+
+body.dark-mode .header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Additional Input Styling - Dark Mode */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="search"] {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode input[type="text"]:focus,
+body.dark-mode input[type="search"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
 }
 
 #formatting-sidebar button:active {
