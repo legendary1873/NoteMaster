@@ -194,3 +194,84 @@ function removeNoteFromCache(noteId) {
         console.error('Error removing from cache:', error);
     }
 }
+
+// Tags API functions
+async function getTags() {
+    try {
+        const response = await fetch(`${API_BASE}/tags`);
+        if (!response.ok) throw new Error('Failed to fetch tags');
+        const tags = await response.json();
+        localStorage.setItem('tagCache', JSON.stringify(tags));
+        return tags;
+    } catch (error) {
+        console.error('Error fetching tags:', error);
+        // Return cached tags on error
+        const cached = localStorage.getItem('tagCache');
+        return cached ? JSON.parse(cached) : [];
+    }
+}
+
+async function createTag(name) {
+    try {
+        const response = await fetch(`${API_BASE}/tags`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to create tag');
+        }
+        const tag = await response.json();
+        // Clear tag cache
+        localStorage.removeItem('tagCache');
+        return tag;
+    } catch (error) {
+        console.error('Error creating tag:', error);
+        throw error;
+    }
+}
+
+async function deleteTag(tagId) {
+    try {
+        const response = await fetch(`${API_BASE}/tags/${tagId}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) throw new Error('Failed to delete tag');
+        // Clear tag cache
+        localStorage.removeItem('tagCache');
+        return await response.json();
+    } catch (error) {
+        console.error('Error deleting tag:', error);
+        throw error;
+    }
+}
+
+async function updateNoteTags(noteId, tagIds) {
+    try {
+        const response = await fetch(`${API_BASE}/notes/${noteId}/tags`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tag_ids: tagIds })
+        });
+        if (!response.ok) throw new Error('Failed to update note tags');
+        // Clear cache
+        localStorage.removeItem(`noteCache_${noteId}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating note tags:', error);
+        throw error;
+    }
+}
+
+// Export functions globally
+window.getAllNotes = getAllNotes;
+window.getNote = getNote;
+window.createNote = createNote;
+window.updateNote = updateNote;
+window.deleteNote = deleteNote;
+window.searchNotes = searchNotes;
+window.getTags = getTags;
+window.createTag = createTag;
+window.deleteTag = deleteTag;
+window.updateNoteTags = updateNoteTags;

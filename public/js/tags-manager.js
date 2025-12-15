@@ -129,73 +129,6 @@ function getSelectedFilterTags() {
 }
 
 /**
- * API: Get all tags
- * @returns {Promise<Array>} Array of tag objects
- */
-async function getTags() {
-    try {
-        const response = await fetch('/api/tags');
-        if (!response.ok) throw new Error('Failed to fetch tags');
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching tags:', error);
-        // Try to get from cache
-        return JSON.parse(localStorage.getItem('tagCache')) || [];
-    }
-}
-
-/**
- * API: Create a new tag
- * @param {string} name - Tag name
- * @returns {Promise<Object>} Created tag object
- */
-async function createTag(name) {
-    try {
-        const response = await fetch('/api/tags', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name })
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to create tag');
-        }
-
-        const tag = await response.json();
-        // Clear tag cache
-        localStorage.removeItem('tagCache');
-        return tag;
-    } catch (error) {
-        console.error('Error creating tag:', error);
-        throw error;
-    }
-}
-
-/**
- * API: Delete a tag
- * @param {number} tagId - Tag ID
- * @returns {Promise<void>}
- */
-async function deleteTag(tagId) {
-    try {
-        const response = await fetch(`/api/tags/${tagId}`, {
-            method: 'DELETE'
-        });
-
-        if (!response.ok) throw new Error('Failed to delete tag');
-        
-        // Clear cache
-        localStorage.removeItem('tagCache');
-    } catch (error) {
-        console.error('Error deleting tag:', error);
-        throw error;
-    }
-}
-
-/**
  * API: Get tags for a note
  * @param {number} noteId - Note ID
  * @returns {Promise<Array>} Array of tag objects
@@ -209,32 +142,6 @@ async function getNoteTagsAPI(noteId) {
     } catch (error) {
         console.error('Error fetching note tags:', error);
         return [];
-    }
-}
-
-/**
- * API: Update note tags (add a tag to note)
- * @param {number} noteId - Note ID
- * @param {Array<number>} tagIds - Array of tag IDs
- * @returns {Promise<void>}
- */
-async function updateNoteTags(noteId, tagIds) {
-    try {
-        const response = await fetch(`/api/notes/${noteId}/tags`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tag_ids: tagIds })
-        });
-
-        if (!response.ok) throw new Error('Failed to update note tags');
-        
-        // Clear cache
-        localStorage.removeItem(`noteCache_${noteId}`);
-    } catch (error) {
-        console.error('Error updating note tags:', error);
-        throw error;
     }
 }
 
@@ -343,13 +250,11 @@ window.refreshTagsModal = refreshTagsModal;
 window.displayNoteTags = displayNoteTags;
 window.displayFilterTags = displayFilterTags;
 window.getSelectedFilterTags = getSelectedFilterTags;
-window.getTags = getTags;
-window.createTag = createTag;
-window.deleteTag = deleteTag;
 window.getNoteTagsAPI = getNoteTagsAPI;
-window.updateNoteTags = updateNoteTags;
 window.addTagToNote = addTagToNote;
 window.removeTagFromNote = removeTagFromNote;
+
+// Note: getTags, createTag, deleteTag, updateNoteTags are exported from api-client.js
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initTagsManager);

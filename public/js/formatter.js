@@ -1,12 +1,12 @@
 // Text Formatter - Handles rich text formatting for contentEditable editor
 const editor = document.getElementById('editor');
-const normalBtn = document.getElementById('normal-btn');
-const boldBtn = document.getElementById('bold-btn');
-const italicBtn = document.getElementById('italic-btn');
-const heading1Btn = document.getElementById('heading1-btn');
-const heading2Btn = document.getElementById('heading2-btn');
-const bulletBtn = document.getElementById('bullet-btn');
-const numberedBtn = document.getElementById('numbered-btn');
+const normalBtn = document.getElementById('btn-normal');
+const boldBtn = document.getElementById('btn-bold');
+const italicBtn = document.getElementById('btn-italic');
+const heading1Btn = document.getElementById('btn-heading1');
+const heading2Btn = document.getElementById('btn-heading2');
+const bulletBtn = document.getElementById('btn-bullet');
+const numberedBtn = document.getElementById('btn-numbered');
 
 // Helper function to execute formatting commands
 function formatText(command, value = null) {
@@ -15,39 +15,53 @@ function formatText(command, value = null) {
 }
 
 // Normal text - convert to paragraph
-normalBtn.addEventListener('click', () => {
-    formatText('formatBlock', '<p>');
-});
+if (normalBtn) {
+    normalBtn.addEventListener('click', () => {
+        formatText('formatBlock', '<p>');
+    });
+}
 
 // Bold formatting
-boldBtn.addEventListener('click', () => {
-    formatText('bold');
-});
+if (boldBtn) {
+    boldBtn.addEventListener('click', () => {
+        formatText('bold');
+    });
+}
 
 // Italic formatting
-italicBtn.addEventListener('click', () => {
-    formatText('italic');
-});
+if (italicBtn) {
+    italicBtn.addEventListener('click', () => {
+        formatText('italic');
+    });
+}
 
 // Heading 1 formatting
-heading1Btn.addEventListener('click', () => {
-    formatText('formatBlock', '<h1>');
-});
+if (heading1Btn) {
+    heading1Btn.addEventListener('click', () => {
+        formatText('formatBlock', '<h1>');
+    });
+}
 
 // Heading 2 formatting
-heading2Btn.addEventListener('click', () => {
-    formatText('formatBlock', '<h2>');
-});
+if (heading2Btn) {
+    heading2Btn.addEventListener('click', () => {
+        formatText('formatBlock', '<h2>');
+    });
+}
 
 // Bullet list formatting
-bulletBtn.addEventListener('click', () => {
-    formatText('insertUnorderedList');
-});
+if (bulletBtn) {
+    bulletBtn.addEventListener('click', () => {
+        formatText('insertUnorderedList');
+    });
+}
 
 // Numbered list formatting
-numberedBtn.addEventListener('click', () => {
-    formatText('insertOrderedList');
-});
+if (numberedBtn) {
+    numberedBtn.addEventListener('click', () => {
+        formatText('insertOrderedList');
+    });
+}
 
 // Prevent default paste behavior and paste as plain text
 editor.addEventListener('paste', (e) => {

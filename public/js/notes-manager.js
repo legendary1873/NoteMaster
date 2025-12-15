@@ -111,11 +111,25 @@ async function loadNoteIntoEditor(noteId) {
  */
 async function createNewNote() {
     try {
-        // Get count of untitled notes to determine next number
+        // Get count of untitled notes and find the highest number
         const notes = await getAllNotes();
-        const untitledNotes = notes.filter(n => n.title && n.title.startsWith('Untitled'));
-        const nextNumber = untitledNotes.length + 1;
-        const newTitle = `Untitled-${nextNumber}`;
+        const untitledNotes = notes.filter(n => n.title && n.title.match(/^Untitled(-\d+)?$/));
+        
+        let nextNumber = 1;
+        if (untitledNotes.length > 0) {
+            // Extract numbers from existing Untitled notes
+            const numbers = untitledNotes
+                .map(n => {
+                    const match = n.title.match(/^Untitled-(\d+)$/);
+                    return match ? parseInt(match[1]) : 0;
+                })
+                .filter(num => num > 0);
+            
+            // Find the highest number and add 1
+            nextNumber = Math.max(...numbers, 0) + 1;
+        }
+        
+        const newTitle = nextNumber === 1 ? 'Untitled-1' : `Untitled-${nextNumber}`;
 
         const newNote = await createNote(newTitle, '');
         if (newNote) {
@@ -152,7 +166,7 @@ async function deleteCurrentNote() {
 
     try {
         const result = await deleteNote(window.currentNoteId);
-        if (result) {
+        if (result && (result.success || result)) {
             window.currentNoteId = null;
             window.currentNoteTags = [];
             return true;
@@ -176,7 +190,12 @@ async function filterNotesByTags() {
 
         // Filter by search query
         if (searchQuery) {
-            notes = await searchNotes(searchQuery);
+            notes = notes.filter(note => {
+                const title = (note.title || '').toLowerCase();
+                const content = (note.content || '').toLowerCase();
+                const query = searchQuery.toLowerCase();
+                return title.includes(query) || content.includes(query);
+            });
         }
 
         // Filter by selected tags
@@ -201,20 +220,8 @@ async function initSearchNotes() {
     if (!searchInput) return;
 
     searchInput.addEventListener('input', async (e) => {
-        const query = e.target.value.trim();
-
-        if (!query) {
-            displayNotesList(allNotes);
-            return;
-        }
-
-        try {
-            const results = await searchNotes(query);
-            displayNotesList(results);
-        } catch (error) {
-            console.error('Error searching notes:', error);
-            displayNotesList([]);
-        }
+        // Trigger the filter function which handles both search and tags
+        filterNotesByTags();
     });
 }
 

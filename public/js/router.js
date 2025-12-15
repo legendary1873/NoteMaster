@@ -100,7 +100,6 @@ function initRouter() {
         btnNewNoteDashboard.addEventListener('click', async () => {
             await createNewNote();
             goToPage(PAGES.EDITOR);
-            loadEditor(window.currentNoteId);
         });
     }
 
@@ -118,7 +117,6 @@ function initRouter() {
         btnNewNote.addEventListener('click', async () => {
             await createNewNote();
             goToPage(PAGES.EDITOR);
-            loadEditor(window.currentNoteId);
         });
     }
 
@@ -136,6 +134,19 @@ function initRouter() {
         btnDeleteNote.addEventListener('click', async () => {
             if (window.currentNoteId && confirm('Are you sure you want to delete this note?')) {
                 await deleteCurrentNote();
+                goToPage(PAGES.NOTES_LIST);
+                loadNotesList();
+            }
+        });
+    }
+
+    const btnSaveNote = document.getElementById('btn-save-note');
+    if (btnSaveNote) {
+        btnSaveNote.addEventListener('click', async () => {
+            if (window.saveNoteToDatabase) {
+                await window.saveNoteToDatabase();
+                alert('Note saved successfully!');
+                // Navigate back to notes list
                 goToPage(PAGES.NOTES_LIST);
                 loadNotesList();
             }
