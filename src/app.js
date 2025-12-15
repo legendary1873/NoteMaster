@@ -152,23 +152,37 @@ async function saveNoteToDatabase() {
 // Explicit save function that bypasses change detection
 // Used when user manually clicks the Save button
 async function saveNoteExplicitly() {
+    console.log('=== SAVE BUTTON CLICKED ===');
+    console.log('window.currentNoteId:', window.currentNoteId);
+    
     if (!window.currentNoteId) {
         console.warn('No note selected, cannot save');
         return false;
     }
 
-    const title = (noteTitle?.value || 'Untitled Note').trim();
-    const content = editor?.innerHTML || '';
+    // Get fresh references to DOM elements
+    const titleInput = document.getElementById('note-title');
+    const editorDiv = document.getElementById('editor');
+    
+    console.log('titleInput element:', titleInput);
+    console.log('editorDiv element:', editorDiv);
+    
+    const title = (titleInput?.value || 'Untitled Note').trim();
+    const content = editorDiv?.innerHTML || '';
+
+    console.log('Title to save:', title);
+    console.log('Content to save (first 100 chars):', content.substring(0, 100));
+    console.log('Content length:', content.length);
+    console.log('Current note ID:', window.currentNoteId);
 
     try {
-        console.log('Explicitly saving note:', window.currentNoteId);
-        console.log('Title:', title);
-        console.log('Content length:', content.length);
-        
+        console.log('Calling updateNote API...');
         // Save the note content and title
-        const result = await updateNote(window.currentNoteId, title, content);
+        const result = await window.updateNote(window.currentNoteId, title, content);
+        console.log('updateNote result:', result);
+        
         if (!result) {
-            console.error('Failed to save note');
+            console.error('Failed to save note - updateNote returned falsy value');
             return false;
         }
         
@@ -176,15 +190,16 @@ async function saveNoteExplicitly() {
         if (window.currentNoteTags && window.updateNoteTags) {
             const tagIds = window.currentNoteTags.map(t => t.id);
             console.log('Saving tags:', tagIds);
-            await window.updateNoteTags(window.currentNoteId, tagIds);
+            const tagsResult = await window.updateNoteTags(window.currentNoteId, tagIds);
+            console.log('updateNoteTags result:', tagsResult);
         }
         
         lastSavedContent = content;
         lastSavedTitle = title;
-        console.log('Note and tags saved successfully');
+        console.log('=== SAVE COMPLETE - SUCCESS ===');
         return true;
     } catch (error) {
-        console.error('Error saving note:', error);
+        console.error('=== SAVE COMPLETE - ERROR ===', error);
         return false;
     }
 }
@@ -217,9 +232,56 @@ function registerServiceWorker() {
 // Save before leaving page
 window.addEventListener('beforeunload', saveNoteToDatabase);
 
+// Setup save button after app is initialized
+function setupSaveButton() {
+    console.log('setupSaveButton called');
+    const btnSaveNote = document.getElementById('btn-save-note');
+    console.log('btnSaveNote element:', btnSaveNote);
+    
+    if (btnSaveNote) {
+        // Remove any existing listeners first
+        const newButton = btnSaveNote.cloneNode(true);
+        btnSaveNote.parentNode.replaceChild(newButton, btnSaveNote);
+        
+        const freshButton = document.getElementById('btn-save-note');
+        freshButton.addEventListener('click', function(e) {
+            console.log('=== BUTTON CLICK EVENT FIRED ===');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            (async () => {
+                console.log('Inside async handler');
+                const success = await saveNoteExplicitly();
+                console.log('Save result:', success);
+                
+                if (success) {
+                    alert('Note saved successfully!');
+                    // Navigate back to notes list
+                    if (window.goToPage && window.PAGES) {
+                        console.log('Navigating to notes list');
+                        window.goToPage(window.PAGES.NOTES_LIST);
+                        if (window.loadNotesList) {
+                            window.loadNotesList();
+                        }
+                    }
+                } else {
+                    alert('Failed to save note');
+                }
+            })();
+        });
+        console.log('Save button listener attached');
+    } else {
+        console.error('btn-save-note element not found!');
+    }
+}
+
 // Run initialization when DOM is loaded
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
+    document.addEventListener('DOMContentLoaded', () => {
+        initApp();
+        setupSaveButton();
+    });
 } else {
     initApp();
+    setupSaveButton();
 }

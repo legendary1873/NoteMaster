@@ -140,22 +140,8 @@ function initRouter() {
         });
     }
 
-    const btnSaveNote = document.getElementById('btn-save-note');
-    if (btnSaveNote) {
-        btnSaveNote.addEventListener('click', async () => {
-            if (window.saveNoteExplicitly) {
-                const success = await window.saveNoteExplicitly();
-                if (success) {
-                    alert('Note saved successfully!');
-                    // Navigate back to notes list
-                    goToPage(PAGES.NOTES_LIST);
-                    loadNotesList();
-                } else {
-                    alert('Failed to save note');
-                }
-            }
-        });
-    }
+    // Note: Save button is set up in app.js after it loads
+    // This is because saveNoteExplicitly is defined in app.js which loads after router.js
 
     // Tags modal
     const btnManageTags = document.getElementById('btn-manage-tags');

@@ -183,6 +183,12 @@ app.put('/api/notes/:id', (req, res) => {
     const { id } = req.params;
     const { title, content } = req.body;
 
+    console.log('PUT /api/notes/:id called');
+    console.log('Note ID:', id);
+    console.log('Title received:', title);
+    console.log('Content received (first 100 chars):', content ? content.substring(0, 100) : '');
+    console.log('Content length:', content ? content.length : 0);
+
     db.run(
         'UPDATE notes SET title = ?, content = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
         [title, content, id],
@@ -191,8 +197,10 @@ app.put('/api/notes/:id', (req, res) => {
                 console.error('Error updating note:', err);
                 res.status(500).json({ error: err.message });
             } else if (this.changes === 0) {
+                console.error('Note not found - id:', id);
                 res.status(404).json({ error: 'Note not found' });
             } else {
+                console.log('Note updated successfully - changes:', this.changes);
                 res.json({ 
                     id: parseInt(id), 
                     title, 

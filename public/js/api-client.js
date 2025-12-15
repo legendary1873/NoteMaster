@@ -77,13 +77,16 @@ async function createNote(title, content = '') {
 // Update note
 async function updateNote(noteId, title, content) {
     try {
+        console.log('updateNote called with:', {noteId, title, contentLength: content.length});
         const response = await fetch(`${API_BASE}/notes/${noteId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title, content })
         });
+        console.log('updateNote response status:', response.status);
         if (!response.ok) throw new Error('Failed to update note');
         const updated = await response.json();
+        console.log('updateNote response:', updated);
         updateNoteInCache(noteId, updated);
         return updated;
     } catch (error) {
