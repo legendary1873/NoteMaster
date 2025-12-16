@@ -1,6 +1,6 @@
 /* Dark Theme for NoteMaster */
 
-/* Fonts */
+/* Fonts - Same as light theme */
 @font-face {
     font-family: "iAWriterMono";
     src: url("../fonts/iAWriterMonoS-Regular.ttf") format("truetype");
@@ -33,6 +33,7 @@
 body.dark-mode {
     background-color: #1a1a1a;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode .page {
@@ -40,11 +41,19 @@ body.dark-mode .page {
     color: #e0e0e0;
 }
 
+/* Home Page - Dark Mode */
 body.dark-mode #page-home {
     background: linear-gradient(135deg, #5a6f99 0%, #6a4a94 100%);
 }
 
-body.dark-mode .home-content h1,
+body.dark-mode .home-container {
+    color: white;
+}
+
+body.dark-mode .home-content h1 {
+    color: #ffffff;
+}
+
 body.dark-mode .home-content p {
     color: #ffffff;
 }
@@ -52,6 +61,7 @@ body.dark-mode .home-content p {
 /* Buttons - Dark Mode */
 body.dark-mode .btn {
     color: white;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode .btn-primary,
@@ -80,18 +90,30 @@ body.dark-mode .btn-danger:hover {
     background-color: #da190b;
 }
 
-/* Dashboard - Dark Mode */
-body.dark-mode .dashboard-container,
-body.dark-mode .notes-list-container,
-body.dark-mode .editor-container {
+/* Dashboard Page - Dark Mode */
+body.dark-mode #page-dashboard {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .dashboard-container {
     background-color: #1a1a1a;
     color: #e0e0e0;
 }
 
-body.dark-mode .dashboard-header,
-body.dark-mode .notes-header,
-body.dark-mode .editor-header {
+body.dark-mode .dashboard-header {
     border-bottom-color: #4CAF50;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dashboard-header h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .dashboard-content {
+    color: #e0e0e0;
+}
+
+body.dark-mode .stats-grid {
     color: #e0e0e0;
 }
 
@@ -109,15 +131,39 @@ body.dark-mode .stat-label {
     color: #999;
 }
 
-/* Search and Filter - Dark Mode */
+body.dark-mode .dashboard-actions {
+    color: #e0e0e0;
+}
+
+/* Notes List Page - Dark Mode */
+body.dark-mode #page-notes-list {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .notes-list-container {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .notes-header {
+    border-bottom-color: #4CAF50;
+    color: #e0e0e0;
+}
+
+body.dark-mode .notes-header h2 {
+    color: #e0e0e0;
+}
+
 body.dark-mode .search-filter-section {
     background-color: #2a2a2a;
+    color: #e0e0e0;
 }
 
 body.dark-mode .search-box input {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode .search-box input:focus {
@@ -129,10 +175,15 @@ body.dark-mode .filter-section {
     color: #e0e0e0;
 }
 
+body.dark-mode .filter-section label {
+    color: #e0e0e0;
+}
+
 body.dark-mode .filter-tag {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode .filter-tag:hover {
@@ -146,7 +197,10 @@ body.dark-mode .filter-tag.active {
     border-color: #4CAF50;
 }
 
-/* Notes Grid - Dark Mode */
+body.dark-mode .notes-grid {
+    color: #e0e0e0;
+}
+
 body.dark-mode .note-card {
     background-color: #2a2a2a;
     border-color: #444;
@@ -165,10 +219,32 @@ body.dark-mode .note-card h3 {
 
 body.dark-mode .note-preview {
     color: #999;
+    font-family: "iAWriterMono", monospace;
+}
+
+body.dark-mode .note-preview strong {
+    color: #e0e0e0;
+    font-weight: bold;
+}
+
+body.dark-mode .note-preview em {
+    color: #999;
+}
+
+body.dark-mode .note-preview h1,
+body.dark-mode .note-preview h2,
+body.dark-mode .note-preview h3 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .note-preview ul,
+body.dark-mode .note-preview ol {
+    color: #999;
 }
 
 body.dark-mode .note-meta {
     border-top-color: #444;
+    color: #999;
 }
 
 body.dark-mode .note-date {
@@ -179,11 +255,43 @@ body.dark-mode .empty-message {
     color: #666;
 }
 
-/* Editor - Dark Mode */
+/* Editor Page - Dark Mode */
+body.dark-mode #page-editor {
+    background-color: #1a1a1a;
+}
+
+body.dark-mode .editor-container {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-header {
+    border-bottom-color: #4CAF50;
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-header h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-content {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .editor-main {
+    color: #e0e0e0;
+}
+
+body.dark-mode .title-section {
+    color: #e0e0e0;
+}
+
 body.dark-mode #note-title {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode #note-title:focus {
@@ -191,18 +299,6 @@ body.dark-mode #note-title:focus {
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
 }
 
-body.dark-mode #editor {
-    background-color: #3a3a3a;
-    border-color: #444;
-    color: #e0e0e0;
-}
-
-body.dark-mode #editor:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
-}
-
-/* Tags Section - Dark Mode */
 body.dark-mode .tags-section {
     background-color: #2a2a2a;
     color: #e0e0e0;
@@ -212,16 +308,27 @@ body.dark-mode .tags-section label {
     color: #e0e0e0;
 }
 
+body.dark-mode .note-tags {
+    color: #e0e0e0;
+}
+
 body.dark-mode .tag-badge {
     background-color: #4CAF50;
     color: white;
+}
+
+body.dark-mode .tag-remove {
+    color: white;
+}
+
+body.dark-mode .tag-remove:hover {
+    opacity: 0.8;
 }
 
 body.dark-mode .no-tags {
     color: #666;
 }
 
-/* Toolbar - Dark Mode */
 body.dark-mode .editor-toolbar {
     background-color: #2a2a2a;
     color: #e0e0e0;
@@ -230,12 +337,15 @@ body.dark-mode .editor-toolbar {
 
 body.dark-mode .editor-toolbar h4 {
     color: #999;
+    font-size: 11px;
+    margin-right: 8px;
 }
 
 body.dark-mode .btn-toolbar {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode .btn-toolbar:hover {
@@ -243,25 +353,78 @@ body.dark-mode .btn-toolbar:hover {
     border-color: #4CAF50;
 }
 
-/* Editor Content and Layout - Dark Mode */
-body.dark-mode .editor-content {
-    background-color: #1a1a1a;
+body.dark-mode .editor-area {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
-body.dark-mode .editor-main {
-    gap: 15px;
+body.dark-mode .editor-area:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
 }
 
-body.dark-mode .title-section {
-    display: flex;
+body.dark-mode .editor-area strong {
+    color: #ffffff;
+    font-weight: bold;
 }
 
-body.dark-mode .header-actions {
-    display: flex;
-    gap: 10px;
+body.dark-mode .editor-area em {
+    color: #e0e0e0;
+    font-style: italic;
+}
+
+body.dark-mode .editor-area h1,
+body.dark-mode .editor-area h2,
+body.dark-mode .editor-area h3 {
+    color: #ffffff;
+}
+
+body.dark-mode .editor-area ul,
+body.dark-mode .editor-area ol {
+    color: #e0e0e0;
+}
+
+/* Special handling for #editor (original editor element) */
+body.dark-mode #editor {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
+}
+
+body.dark-mode #editor:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+body.dark-mode #editor h1,
+body.dark-mode #editor h2,
+body.dark-mode #editor h3 {
+    color: #ffffff;
+}
+
+body.dark-mode #editor strong {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+body.dark-mode #editor em {
+    color: #e0e0e0;
+    font-style: italic;
+}
+
+body.dark-mode #editor ul,
+body.dark-mode #editor ol {
+    color: #e0e0e0;
 }
 
 /* Modal - Dark Mode */
+body.dark-mode .modal {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
 body.dark-mode .modal-content {
     background-color: #2a2a2a;
     color: #e0e0e0;
@@ -269,6 +432,10 @@ body.dark-mode .modal-content {
 
 body.dark-mode .modal-header {
     border-bottom-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .modal-header h3 {
     color: #e0e0e0;
 }
 
@@ -280,11 +447,16 @@ body.dark-mode .tag-input-section input {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode .tag-input-section input:focus {
     border-color: #4CAF50;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+}
+
+body.dark-mode .tags-list {
+    color: #e0e0e0;
 }
 
 body.dark-mode .tag-item {
@@ -297,21 +469,11 @@ body.dark-mode .tag-name {
     color: #e0e0e0;
 }
 
-body.dark-mode .tag-actions {
-    display: flex;
-    gap: 8px;
-}
-
 body.dark-mode .btn-add-tag,
 body.dark-mode .btn-remove-tag {
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
-    padding: 6px 10px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 12px;
 }
 
 body.dark-mode .btn-add-tag:hover,
@@ -321,6 +483,8 @@ body.dark-mode .btn-remove-tag:hover {
 
 body.dark-mode .btn-delete-tag {
     background-color: #f44336;
+    color: white;
+    border: none;
 }
 
 body.dark-mode .btn-delete-tag:hover {
@@ -332,6 +496,10 @@ body.dark-mode .btn-theme-toggle {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+}
+
+body.dark-mode .btn-theme-toggle:hover {
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 body.dark-mode .btn-theme-toggle svg {
@@ -350,67 +518,55 @@ body.dark-mode #status-indicator.online {
     background-color: #1f3d2d;
 }
 
+body.dark-mode #status-indicator.online .status-dot {
+    background-color: #4CAF50;
+}
+
 body.dark-mode #status-indicator.offline {
     border-color: #f44336;
     background-color: #3d1f1f;
 }
 
-/* Editor Area - Dark Mode */
-body.dark-mode .editor-area {
-    background-color: #3a3a3a;
-    border-color: #444;
-    color: #e0e0e0;
+body.dark-mode #status-indicator.offline .status-dot {
+    background-color: #f44336;
 }
 
-body.dark-mode .editor-area:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
-}
-
-body.dark-mode .editor-area strong {
-    color: #ffffff;
-}
-
-body.dark-mode .editor-area em {
-    color: #e0e0e0;
-}
-
-body.dark-mode .editor-area h1,
-body.dark-mode .editor-area h2 {
-    color: #ffffff;
-}
-
-/* Notes List - Dark Mode */
-body.dark-mode .notes-grid {
-    gap: 15px;
-}
-
-body.dark-mode .header-actions {
-    display: flex;
-    gap: 10px;
-}
-
-/* Additional Input Styling - Dark Mode */
+/* Input Elements - Dark Mode */
 body.dark-mode input[type="text"],
-body.dark-mode input[type="search"] {
+body.dark-mode input[type="search"],
+body.dark-mode input[type="password"],
+body.dark-mode textarea,
+body.dark-mode select {
     background-color: #3a3a3a;
     border-color: #444;
     color: #e0e0e0;
+    font-family: "iAWriterMono", monospace;
 }
 
 body.dark-mode input[type="text"]:focus,
-body.dark-mode input[type="search"]:focus {
+body.dark-mode input[type="search"]:focus,
+body.dark-mode input[type="password"]:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
     border-color: #4CAF50;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+    outline: none;
 }
 
-#formatting-sidebar button:active {
-    background-color: #5a5b5c;
-    transform: translateY(0);
+/* Scrollbars - Dark Mode */
+body.dark-mode ::-webkit-scrollbar {
+    width: 8px;
 }
 
-#bold-btn strong,
-#italic-btn em,
-#normal-btn {
-    font-family: "iAWriterMono", monospace;
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #2a2a2a;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

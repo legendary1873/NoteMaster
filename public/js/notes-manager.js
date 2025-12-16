@@ -67,7 +67,7 @@ function displayNotesList(notes, isFiltered = false) {
     notesGrid.innerHTML = notes.map(note => `
         <div class="note-card" data-note-id="${note.id}">
             <h3>${escapeHtml(note.title || 'Untitled')}</h3>
-            <p class="note-preview">${escapeHtml((note.content || '').substring(0, 100))}</p>
+            <div class="note-preview">${(note.content || '').substring(0, 200)}</div>
             <div class="note-meta">
                 <span class="note-date">${new Date(note.updated_at).toLocaleDateString()}</span>
             </div>

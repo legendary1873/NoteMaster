@@ -186,7 +186,7 @@ body {
 /* Dashboard Page */
 #page-dashboard {
     flex-direction: column;
-    padding: 40px;
+    padding: 30px;
     background-color: white;
 }
 
@@ -200,9 +200,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     border-bottom: 2px solid #4CAF50;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 }
 
 .dashboard-header h2 {
@@ -213,7 +213,7 @@ body {
 .dashboard-content {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
 }
 
 .stats-grid {
@@ -224,7 +224,7 @@ body {
 
 .stat-card {
     background-color: #f9f9f9;
-    padding: 30px;
+    padding: 20px;
     border-radius: 8px;
     border-left: 4px solid #4CAF50;
     text-align: center;
@@ -235,7 +235,7 @@ body {
     font-size: 48px;
     font-weight: bold;
     color: #4CAF50;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .stat-label {
@@ -245,7 +245,7 @@ body {
 
 .dashboard-actions {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
 /* Notes List Page */
@@ -268,9 +268,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     border-bottom: 2px solid #4CAF50;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 }
 
 .notes-header h2 {
@@ -284,14 +284,14 @@ body {
 }
 
 .search-filter-section {
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
     background-color: #f9f9f9;
     border-radius: 8px;
 }
 
 .search-box {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .search-box input {
@@ -359,7 +359,7 @@ body {
 
 .note-card {
     background-color: #f9f9f9;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid #ddd;
     cursor: pointer;
@@ -376,8 +376,8 @@ body {
 }
 
 .note-card h3 {
-    margin: 0 0 10px 0;
-    font-size: 18px;
+    margin: 0 0 8px 0;
+    font-size: 16px;
     color: #333;
     white-space: nowrap;
     overflow: hidden;
@@ -385,25 +385,60 @@ body {
 }
 
 .note-preview {
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     font-size: 13px;
     color: #666;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
+    font-family: "iAWriterMono", monospace;
     line-height: 1.4;
-    flex: 1;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.note-preview strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.note-preview em {
+    font-style: italic;
+    color: #666;
+}
+
+.note-preview h1,
+.note-preview h2,
+.note-preview h3 {
+    margin: 4px 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+}
+
+.note-preview h1 {
+    font-size: 15px;
+}
+
+.note-preview h2 {
+    font-size: 14px;
+}
+
+.note-preview ul,
+.note-preview ol {
+    margin: 4px 0;
+    padding-left: 18px;
 }
 
 .note-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
-    padding-top: 10px;
+    margin-top: 8px;
+    padding-top: 8px;
     border-top: 1px solid #eee;
     font-size: 11px;
     color: #999;
@@ -443,8 +478,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
     border-bottom: 2px solid #4CAF50;
 }
 
@@ -463,7 +498,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .title-section {
@@ -472,7 +507,7 @@ body {
 
 #note-title {
     flex: 1;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-family: "iAWriterMono", monospace;
@@ -487,7 +522,7 @@ body {
 }
 
 .tags-section {
-    padding: 15px;
+    padding: 12px;
     background-color: #f9f9f9;
     border-radius: 8px;
 }
@@ -495,26 +530,27 @@ body {
 .tags-section label {
     display: block;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
 }
 
 .note-tags {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     min-height: 25px;
 }
 
 .tag-badge {
     background-color: #4CAF50;
     color: white;
-    padding: 4px 10px;
+    padding: 4px 8px;
     border-radius: 12px;
-    font-size: 12px;
+    font-size: 11px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 
 .tag-remove {
@@ -522,9 +558,9 @@ body {
     border: none;
     color: white;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     padding: 0;
-    margin-left: 4px;
+    margin-left: 2px;
 }
 
 .tag-remove:hover {
@@ -533,14 +569,14 @@ body {
 
 .no-tags {
     color: #999;
-    font-size: 13px;
+    font-size: 12px;
     margin: 0;
 }
 
 .editor-toolbar {
     display: flex;
     gap: 8px;
-    padding: 12px;
+    padding: 10px;
     background-color: #f9f9f9;
     border-radius: 8px;
     align-items: center;
@@ -549,8 +585,8 @@ body {
 
 .editor-toolbar h4 {
     margin: 0;
-    font-size: 12px;
-    margin-right: 10px;
+    font-size: 11px;
+    margin-right: 8px;
     color: #666;
 }
 
@@ -558,7 +594,7 @@ body {
     flex: 1;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 15px;
+    padding: 12px;
     font-family: "iAWriterMono", monospace;
     font-size: 16px;
     line-height: 1.6;
@@ -575,8 +611,9 @@ body {
 }
 
 #editor h1,
-#editor h2 {
-    margin: 20px 0 10px 0;
+#editor h2,
+#editor h3 {
+    margin: 12px 0 8px 0;
     line-height: 1.4;
     font-weight: bold;
 }
@@ -589,14 +626,18 @@ body {
     font-size: 24px;
 }
 
+#editor h3 {
+    font-size: 20px;
+}
+
 #editor ul,
 #editor ol {
-    margin: 10px 0;
+    margin: 8px 0;
     padding-left: 40px;
 }
 
 #editor li {
-    margin: 5px 0;
+    margin: 4px 0;
 }
 
 #editor strong {
@@ -654,32 +695,32 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     border-bottom: 1px solid #ddd;
 }
 
 .modal-header h3 {
     margin: 0;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .modal-body {
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .tag-input-section {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .tag-input-section input {
     flex: 1;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-family: "iAWriterMono", monospace;
@@ -695,14 +736,14 @@ body {
 .tags-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .tag-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    padding: 10px;
     background-color: #f9f9f9;
     border-radius: 8px;
     border: 1px solid #ddd;
@@ -710,12 +751,12 @@ body {
 
 .tag-name {
     flex: 1;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .tag-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .btn-add-tag,
@@ -724,11 +765,11 @@ body {
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 6px 10px;
+    padding: 5px 10px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s ease;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .btn-add-tag:hover {
@@ -744,10 +785,11 @@ body {
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 6px 10px;
+    padding: 5px 10px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s ease;
+    font-size: 11px;
 }
 
 .btn-delete-tag:hover {
