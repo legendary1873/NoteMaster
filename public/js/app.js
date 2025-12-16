@@ -1,8 +1,5 @@
-// THIS FILE IS DEPRECATED - Use /public/js/app.js instead
-// Keeping this file for reference only
-
-const editor_deprecated = document.getElementById('editor');
-const noteTitle_deprecated = document.getElementById('note-title');
+const editor = document.getElementById('editor');
+const noteTitle = document.getElementById('note-title');
 const AUTO_SAVE_INTERVAL = 3000; // 3 seconds
 let autoSaveTimer;
 let lastSavedContent = '';
@@ -279,46 +276,72 @@ function registerServiceWorker() {
 // Save before leaving page
 window.addEventListener('beforeunload', saveNoteToDatabase);
 
-// Setup save button after app is initialized
+// Setup save button - simple direct approach
 function setupSaveButton() {
-    console.log('setupSaveButton called');
-    const btnSaveNote = document.getElementById('btn-save-note');
-    console.log('btnSaveNote element:', btnSaveNote);
+    const btn = document.getElementById('btn-save-note');
+    console.log('setupSaveButton: btn found?', !!btn);
     
-    if (btnSaveNote) {
-        // Remove any existing listeners first
-        const newButton = btnSaveNote.cloneNode(true);
-        btnSaveNote.parentNode.replaceChild(newButton, btnSaveNote);
+    if (!btn) return;
+    
+    // Use onclick attribute directly
+    btn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleSaveClick();
+        return false;
+    };
+    
+    console.log('setupSaveButton: listener attached');
+}
+
+async function handleSaveClick() {
+    console.log('=== HANDLE SAVE CLICK ===');
+    console.log('currentNoteId:', window.currentNoteId);
+    
+    if (!window.currentNoteId) {
+        alert('No note to save');
+        return;
+    }
+    
+    const titleEl = document.getElementById('note-title');
+    const editorEl = document.getElementById('editor');
+    const title = titleEl ? titleEl.value : 'Untitled';
+    const content = editorEl ? editorEl.innerHTML : '';
+    
+    console.log('Title:', title, 'Content length:', content.length);
+    
+    try {
+        const url = `http://localhost:3000/api/notes/${window.currentNoteId}`;
+        console.log('Fetching:', url);
         
-        const freshButton = document.getElementById('btn-save-note');
-        freshButton.addEventListener('click', function(e) {
-            console.log('=== BUTTON CLICK EVENT FIRED ===');
-            e.preventDefault();
-            e.stopPropagation();
-            
-            (async () => {
-                console.log('Inside async handler');
-                const success = await saveNoteExplicitly();
-                console.log('Save result:', success);
-                
-                if (success) {
-                    alert('Note saved successfully!');
-                    // Navigate back to notes list
-                    if (window.goToPage && window.PAGES) {
-                        console.log('Navigating to notes list');
-                        window.goToPage(window.PAGES.NOTES_LIST);
-                        if (window.loadNotesList) {
-                            window.loadNotesList();
-                        }
-                    }
-                } else {
-                    alert('Failed to save note');
-                }
-            })();
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, content })
         });
-        console.log('Save button listener attached');
-    } else {
-        console.error('btn-save-note element not found!');
+        
+        console.log('Response status:', response.status);
+        
+        if (response.ok) {
+            console.log('Save successful');
+            alert('Note saved!');
+            
+            // Redirect to notes list
+            if (window.goToPage && window.PAGES) {
+                console.log('Redirecting to notes list');
+                window.goToPage(window.PAGES.NOTES_LIST);
+                if (window.loadNotesList) {
+                    window.loadNotesList();
+                }
+            }
+        } else {
+            const errorText = await response.text();
+            console.error('Save failed:', response.status, errorText);
+            alert('Save failed: ' + response.status);
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        alert('Error: ' + err.message);
     }
 }
 
