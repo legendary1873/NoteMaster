@@ -4,20 +4,20 @@ A Progressive Web App for creating, saving, and managing notes with a rich text 
 
 ## Features
 
-### ✅ Functional Backend Database
+### Functional Backend Database
 - **SQLite database** with proper schema for notes (id, title, content, created_at, updated_at)
 - **Complete CRUD operations**: Create, Read, Update, Delete notes
 - **Error handling** and validation on all API endpoints
 - **Express.js server** running on port 3000 with CORS support
 
-### ✅ Search Functionality
+### Search Functionality
 - **Full-text search** across both title and content
 - **Real-time search** as you type in the search bar
 - **API endpoint**: `/api/notes/search/:query` for backend search
 - **Local fallback search** when offline
 - Responsive search UI integrated into the notes panel
 
-### ✅ Functional Rich Text Formatting
+### Functional Rich Text Formatting
 - **ContentEditable div editor** instead of plain textarea
 - **Text formatting options**:
   - **Bold** (`<strong>`)
@@ -29,7 +29,7 @@ A Progressive Web App for creating, saving, and managing notes with a rich text 
 - **Clean paste handling** - pastes as plain text to prevent formatting injection
 - Proper HTML structure preservation
 
-### ✅ Offline Access & LocalStorage
+### Offline Access & LocalStorage
 - **LocalStorage caching** of all notes
 - **Offline mode support** - use the app without internet connection
 - **Automatic sync** when going back online
@@ -37,7 +37,7 @@ A Progressive Web App for creating, saving, and managing notes with a rich text 
 - **Service Worker** for offline functionality with network-first strategy for API calls
 - Status indicator showing online/offline state
 
-### ✅ Consistent & Polished UI
+### Consistent & Polished UI
 - **Light theme** with clean, minimal design
 - **Dark theme** with consistent color scheme
 - **Responsive layout**:
