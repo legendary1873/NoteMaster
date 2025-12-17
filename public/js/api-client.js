@@ -255,7 +255,7 @@ async function updateNoteTags(noteId, tagIds) {
         const response = await fetch(`${API_BASE}/notes/${noteId}/tags`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tag_ids: tagIds })
+            body: JSON.stringify({ tagIds: tagIds })
         });
         if (!response.ok) throw new Error('Failed to update note tags');
         // Clear cache

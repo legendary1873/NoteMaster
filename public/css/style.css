@@ -82,6 +82,9 @@ body {
 
 .home-content {
     max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .home-content h1 {
@@ -100,6 +103,26 @@ body {
     display: flex;
     gap: 15px;
     justify-content: center;
+}
+
+/* Logo Styling */
+.home-logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 30px auto;
+    display: block;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    width: 32px;
+    height: 32px;
+    display: block;
 }
 
 /* Buttons */
@@ -210,6 +233,11 @@ body {
     font-size: 28px;
 }
 
+.dashboard-header .header-brand h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
 .dashboard-content {
     display: flex;
     flex-direction: column;
@@ -274,6 +302,11 @@ body {
 }
 
 .notes-header h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.notes-header .header-brand h2 {
     margin: 0;
     font-size: 28px;
 }
@@ -484,6 +517,11 @@ body {
 }
 
 .editor-header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.editor-header .header-brand h2 {
     margin: 0;
     font-size: 24px;
 }
